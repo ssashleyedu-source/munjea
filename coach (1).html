@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>논구술 AI 코칭 | 문제아</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Noto Sans KR',sans-serif;background:#F8F6F3;color:#1A1A2E;}
+
+    /* NAV */
+    .nav{background:#1A1A2E;padding:14px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+    .nav-back{color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;transition:color 0.2s;}
+    .nav-back:hover{color:white;}
+    .nav-logo{font-family:'Noto Serif KR',serif;color:white;font-size:15px;font-weight:700;text-decoration:none;}
+
+    /* 질문 선택 화면 */
+    #screen-select{padding:48px 40px;}
+    .screen-tag{font-size:10px;letter-spacing:3px;color:#8B1A2F;text-transform:uppercase;margin-bottom:12px;display:block;text-align:center;}
+    .screen-title{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:700;color:#1A1A2E;text-align:center;margin-bottom:8px;}
+    .screen-sub{font-size:13px;color:#999;text-align:center;margin-bottom:40px;line-height:1.7;}
+    .type-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:32px;}
+    .type-tab{padding:9px 24px;border-radius:24px;font-size:13px;cursor:pointer;border:1.5px solid #DDD;background:white;color:#888;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;}
+    .type-tab.active{background:#1A1A2E;color:white;border-color:#1A1A2E;}
+    .q-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:800px;margin:0 auto;}
+    .q-card{background:white;border:1px solid #EEE;border-radius:10px;padding:20px 22px;cursor:pointer;transition:all 0.15s;border-left:3px solid #E0DDD8;}
+    .q-card:hover{border-left-color:#8B1A2F;transform:translateY(-2px);}
+    .q-card.burg{border-left-color:#8B1A2F;}
+    .q-card-type{font-size:10px;letter-spacing:1px;color:#8B1A2F;margin-bottom:8px;}
+    .q-card-text{font-size:14px;color:#1A1A2E;line-height:1.65;font-weight:500;}
+    .q-card-hint{font-size:12px;color:#AAA;margin-top:8px;}
+    .q-content{display:none;}
+    .q-content.active{display:block;}
+
+    /* 코칭 화면 */
+    #screen-coach{display:none;padding:32px 40px;max-width:800px;margin:0 auto;}
+    .coach-header{background:white;border-radius:10px;padding:20px 24px;margin-bottom:20px;border-left:4px solid #1A1A2E;}
+    .coach-header-tag{font-size:10px;letter-spacing:2px;color:#8B1A2F;margin-bottom:8px;}
+    .coach-question{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:#1A1A2E;line-height:1.5;}
+    .coach-desc{font-size:13px;color:#888;margin-top:8px;}
+
+    /* 채팅 영역 */
+    .chat-area{background:white;border-radius:10px;padding:24px;margin-bottom:16px;min-height:200px;}
+    .chat-empty{text-align:center;padding:40px 20px;color:#BBB;font-size:13px;}
+    .chat-row{display:flex;margin-bottom:16px;align-items:flex-start;}
+    .chat-row.right{justify-content:flex-end;}
+    .ai-avatar{width:32px;height:32px;background:#8B1A2F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700;margin-right:10px;flex-shrink:0;}
+    .bubble{max-width:78%;padding:14px 16px;font-size:14px;line-height:1.75;border-radius:10px;}
+    .bubble-ai{background:#F0EDE8;color:#333;border-radius:10px 10px 10px 2px;}
+    .bubble-ai .b-label{font-size:10px;color:#8B1A2F;letter-spacing:1px;margin-bottom:6px;font-weight:700;}
+    .bubble-student{background:#1A1A2E;color:white;border-radius:10px 10px 2px 10px;}
+    .bubble-student .b-label{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-bottom:6px;}
+    .bubble-feedback{background:#F8F0F2;border:1px solid #F0D0D8;color:#333;border-radius:10px;}
+    .bubble-feedback .b-label{font-size:10px;color:#8B1A2F;letter-spacing:1px;margin-bottom:8px;font-weight:700;}
+    .score-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+    .score-badge{font-size:11px;padding:4px 10px;border-radius:10px;background:rgba(139,26,47,0.08);color:#8B1A2F;}
+    .good-point{background:#F0F5F0;border-radius:6px;padding:10px 12px;font-size:12px;color:#3A6A3A;margin-top:10px;}
+    .bad-point{background:#FFF0F0;border-radius:6px;padding:10px 12px;font-size:12px;color:#8B1A2F;margin-top:8px;}
+
+    /* 입력 영역 */
+    .input-area{background:white;border-radius:10px;padding:16px;}
+    .input-label{font-size:11px;color:#AAA;letter-spacing:1px;margin-bottom:10px;display:block;}
+    .input-wrap{display:flex;gap:10px;align-items:flex-end;}
+    textarea{flex:1;border:1.5px solid #E0DDD8;border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:#1A1A2E;resize:none;line-height:1.65;height:80px;transition:border-color 0.2s;}
+    textarea:focus{outline:none;border-color:#1A1A2E;}
+    .send-btn{padding:12px 20px;background:#1A1A2E;color:white;border:none;border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;height:80px;}
+    .send-btn:hover{opacity:0.85;}
+    .send-btn:disabled{opacity:0.3;cursor:not-allowed;}
+    .round-info{font-size:12px;color:#BBB;text-align:center;margin-top:10px;}
+    .round-dots{display:flex;gap:6px;justify-content:center;margin-top:6px;}
+    .dot{width:8px;height:8px;border-radius:50%;background:#EEE;}
+    .dot.active{background:#8B1A2F;}
+    .dot.done{background:#1A1A2E;}
+
+    /* 완료 화면 */
+    .complete-card{background:white;border-radius:10px;padding:32px;text-align:center;margin-bottom:16px;}
+    .complete-icon{font-size:40px;margin-bottom:16px;}
+    .complete-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;color:#1A1A2E;margin-bottom:8px;}
+    .complete-sub{font-size:13px;color:#888;margin-bottom:24px;}
+    .score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+    .score-item{background:#F7F5F2;border-radius:8px;padding:16px 12px;text-align:center;}
+    .score-num{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700;color:#8B1A2F;margin-bottom:4px;}
+    .score-label{font-size:11px;color:#999;}
+    .restart-btn{padding:13px 32px;background:#1A1A2E;color:white;border:none;border-radius:8px;font-size:14px;font-family:'Noto Serif KR',serif;cursor:pointer;margin-right:10px;transition:opacity 0.2s;}
+    .restart-btn:hover{opacity:0.85;}
+    .back-btn{padding:13px 24px;background:white;border:1.5px solid #DDD;color:#666;border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all 0.15s;}
+    .back-btn:hover{border-color:#1A1A2E;color:#1A1A2E;}
+
+    /* 로딩 */
+    .typing{display:flex;gap:4px;padding:14px 16px;background:#F0EDE8;border-radius:10px 10px 10px 2px;width:fit-content;}
+    .typing span{width:6px;height:6px;border-radius:50%;background:#8B1A2F;animation:bounce 1s infinite;}
+    .typing span:nth-child(2){animation-delay:0.15s;}
+    .typing span:nth-child(3){animation-delay:0.3s;}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+
+    /* 로그인 모달 */
+    #login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;}
+    #login-modal.show{display:flex;}
+    .login-card{background:white;border-radius:14px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,0.2);margin:20px;}
+    .login-logo{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:#1A1A2E;text-align:center;margin-bottom:4px;}
+    .login-sub{font-size:13px;color:#999;text-align:center;margin-bottom:28px;}
+    .login-label{font-size:12px;color:#555;margin-bottom:6px;display:block;font-weight:500;}
+    .login-input{width:100%;border:1.5px solid #E0DDD8;border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:#1A1A2E;margin-bottom:14px;transition:border-color 0.2s;box-sizing:border-box;}
+    .login-input:focus{outline:none;border-color:#1A1A2E;}
+    .login-btn{width:100%;padding:14px;background:#1A1A2E;color:white;border:none;border-radius:8px;font-size:14px;font-family:'Noto Serif KR',serif;cursor:pointer;transition:opacity 0.2s;margin-top:6px;}
+    .login-btn:hover{opacity:0.85;}
+    .login-error{font-size:12px;color:#8B1A2F;text-align:center;margin-top:10px;display:none;}
+    .login-cancel{width:100%;padding:10px;background:none;border:none;color:#AAA;font-size:12px;cursor:pointer;margin-top:8px;font-family:'Noto Sans KR',sans-serif;}
+    .login-cancel:hover{color:#666;}
+
+    @media(max-width:600px){
+      #screen-select{padding:32px 20px;}
+      .q-grid{grid-template-columns:1fr;}
+      #screen-coach{padding:20px;}
+      .score-card{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-back" href="interview.html">← 논구술 홈</a>
+  <a class="nav-logo" href="index.html">문제아 問·題·兒</a>
+  <div style="font-size:12px;color:rgba(255,255,255,0.35);">AI 코칭 데모</div>
+</nav>
+
+<!-- 로그인 모달 -->
+<div id="login-modal">
+  <div class="login-card">
+    <div class="login-logo">문제아 問·題·兒</div>
+    <div class="login-sub">코칭을 시작하려면 로그인하세요</div>
+    <label class="login-label">아이디</label>
+    <input class="login-input" type="text" id="login-id" placeholder="아이디를 입력하세요" />
+    <label class="login-label">비밀번호</label>
+    <input class="login-input" type="password" id="login-pw" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="login-btn" onclick="doLogin()">로그인 →</button>
+    <div class="login-error" id="login-error">아이디 또는 비밀번호가 올바르지 않습니다</div>
+    <button class="login-cancel" onclick="closeLogin()">취소</button>
+  </div>
+</div>
+
+<!-- 질문 선택 화면 -->
+<div id="screen-select">
+  <span class="screen-tag">하이애비뉴 논구술 코칭</span>
+  <div class="screen-title">질문을 선택하세요</div>
+  <div class="screen-sub">질문을 선택하고 답변을 입력하면<br>AI가 면접관처럼 파고들며 상위권 답변으로 끌어올립니다</div>
+
+  <div class="type-tabs">
+    <button class="type-tab active" onclick="switchType('value',this)">가치판단형</button>
+    <button class="type-tab" onclick="switchType('situation',this)">상황판단형</button>
+    <button class="type-tab" onclick="switchType('jaso',this)">자소서형</button>
+  </div>
+
+  <div id="tab-value" class="q-content active">
+    <div class="q-grid">
+      <div class="q-card burg" onclick="startCoach('가치판단형','착한 사람은 손해를 본다','개념을 정의하고 논리적 근거를 제시하며 구체적 사례와 미래 연결까지')">
+        <div class="q-card-type">가치판단형 · 인성/가치관</div>
+        <div class="q-card-text">"착한 사람은 손해를 본다"</div>
+        <div class="q-card-hint">찬성/반대 입장과 근거를 논리적으로 구성해보세요 →</div>
+      </div>
+      <div class="q-card burg" onclick="startCoach('가치판단형','경쟁은 사람을 성장시킨다','개념 정의부터 구체적 사례와 미래 연결까지')">
+        <div class="q-card-type">가치판단형 · 성장/교육</div>
+        <div class="q-card-text">"경쟁은 사람을 성장시킨다"</div>
+        <div class="q-card-hint">단순 찬반을 넘어 본인만의 논리를 만들어보세요 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('가치판단형','규칙은 항상 지켜야 한다','규칙의 의미와 예외 상황에 대한 균형 잡힌 시각을')">
+        <div class="q-card-type">가치판단형 · 도덕/규범</div>
+        <div class="q-card-text">"규칙은 항상 지켜야 한다"</div>
+        <div class="q-card-hint">절대적 규칙과 예외 사이에서 본인의 기준을 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('가치판단형','포기는 용기일 수 있다','포기와 용기의 개념을 재정의하고 논리를')">
+        <div class="q-card-type">가치판단형 · 의지/결단</div>
+        <div class="q-card-text">"포기는 용기일 수 있다"</div>
+        <div class="q-card-hint">역설적 명제를 어떻게 논리적으로 풀어낼까요 →</div>
+      </div>
+      <div class="q-card burg" onclick="startCoach('가치판단형','스마트폰은 삶을 풍요롭게 했는가','기술과 인간의 관계를 다층적으로')">
+        <div class="q-card-type">가치판단형 · 기술/사회</div>
+        <div class="q-card-text">"스마트폰은 삶을 풍요롭게 했는가"</div>
+        <div class="q-card-hint">긍정/부정을 넘어 균형 잡힌 시각을 보여주세요 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('가치판단형','돈이 많으면 행복하다','행복의 개념 정의부터 시작해보세요')">
+        <div class="q-card-type">가치판단형 · 가치/행복</div>
+        <div class="q-card-text">"돈이 많으면 행복하다"</div>
+        <div class="q-card-hint">행복을 어떻게 정의하느냐에서 시작해보세요 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-situation" class="q-content">
+    <div class="q-grid">
+      <div class="q-card burg" onclick="startCoach('상황판단형','우리 학교가 왜 당신을 뽑아야 하나요?','자기 이해와 학교 적합성을 논리적으로')">
+        <div class="q-card-type">상황판단형 · 자기이해</div>
+        <div class="q-card-text">우리 학교가 왜 당신을 뽑아야 하나요?</div>
+        <div class="q-card-hint">본인만의 강점과 학교와의 연결성을 →</div>
+      </div>
+      <div class="q-card burg" onclick="startCoach('상황판단형','성적이 기대보다 낮게 나왔을 때 어떻게 원인을 분석하나요?','단순 복습이 아닌 구조적 분석을')">
+        <div class="q-card-type">상황판단형 · 자기주도학습</div>
+        <div class="q-card-text">성적이 기대보다 낮게 나왔을 때 원인을 어떻게 분석하나요?</div>
+        <div class="q-card-hint">분석 → 전략 → 미래 연결의 구조로 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('상황판단형','팀 과제에서 역할 불균형이 생기면 어떻게 하나요?','갈등 해결 방식과 가치관을')">
+        <div class="q-card-type">상황판단형 · 협력/갈등</div>
+        <div class="q-card-text">팀 과제에서 역할 불균형이 생기면 어떻게 하나요?</div>
+        <div class="q-card-hint">감정이 아닌 구조적 해결책을 보여주세요 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('상황판단형','친한 친구가 규칙을 어기면 어떻게 하겠나요?','우정과 원칙 사이의 판단 기준을')">
+        <div class="q-card-type">상황판단형 · 인성/도덕</div>
+        <div class="q-card-text">친한 친구가 규칙을 어기면 어떻게 하겠나요?</div>
+        <div class="q-card-hint">본인만의 기준과 그 근거를 설명해보세요 →</div>
+      </div>
+      <div class="q-card burg" onclick="startCoach('상황판단형','새로운 환경에 어떻게 적응하나요?','적응 방식과 성격을 구체적 경험으로')">
+        <div class="q-card-type">상황판단형 · 적응력</div>
+        <div class="q-card-text">새로운 환경에 어떻게 적응하나요?</div>
+        <div class="q-card-hint">추상적 말 대신 구체적 경험으로 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('상황판단형','좋아하는 것과 잘하는 것이 다를 때 어떻게 선택하나요?','가치 판단의 기준을 명확히')">
+        <div class="q-card-type">상황판단형 · 진로/선택</div>
+        <div class="q-card-text">좋아하는 것과 잘하는 것이 다를 때 어떻게 선택하나요?</div>
+        <div class="q-card-hint">본인의 선택 기준과 경험을 연결해서 →</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-jaso" class="q-content">
+    <div class="q-grid">
+      <div class="q-card burg" onclick="startCoach('자소서형','이 학교에 지원한 이유를 설명하세요','학교 특성과 본인의 꿈을 연결해서')">
+        <div class="q-card-type">자소서형 · 지원동기</div>
+        <div class="q-card-text">이 학교에 지원한 이유를 설명하세요</div>
+        <div class="q-card-hint">단순 선호가 아닌 구체적 연결고리를 →</div>
+      </div>
+      <div class="q-card burg" onclick="startCoach('자소서형','자기주도학습 경험과 그 결과를 서술하세요','목표-계획-실행-결과의 구조로')">
+        <div class="q-card-type">자소서형 · 자기주도학습</div>
+        <div class="q-card-text">자기주도학습 경험과 그 결과를 서술하세요</div>
+        <div class="q-card-hint">과정과 결과, 깨달음까지 구체적으로 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('자소서형','10년 후 나의 모습과 진로 계획은?','현재와 미래를 구체적으로 연결해서')">
+        <div class="q-card-type">자소서형 · 진로계획</div>
+        <div class="q-card-text">10년 후 나의 모습과 진로 계획은?</div>
+        <div class="q-card-hint">막연한 꿈이 아닌 구체적 로드맵을 →</div>
+      </div>
+      <div class="q-card" onclick="startCoach('자소서형','배려와 나눔을 실천한 경험을 말해보세요','추상적 덕목이 아닌 구체적 경험으로')">
+        <div class="q-card-type">자소서형 · 인성</div>
+        <div class="q-card-text">배려와 나눔을 실천한 경험을 말해보세요</div>
+        <div class="q-card-hint">경험 → 깨달음 → 변화의 구조로 →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 코칭 화면 -->
+<div id="screen-coach">
+  <div class="coach-header">
+    <div class="coach-header-tag" id="coach-type-label"></div>
+    <div class="coach-question" id="coach-question-text"></div>
+    <div class="coach-desc" id="coach-desc-text"></div>
+  </div>
+
+  <div class="chat-area" id="chat-area">
+    <div class="chat-empty" id="chat-empty">
+      답변을 입력하면 AI 코칭이 시작됩니다
+    </div>
+  </div>
+
+  <div class="input-area" id="input-area">
+    <span class="input-label" id="input-label">내 답변 입력</span>
+    <div class="input-wrap">
+      <textarea id="answer-input" placeholder="답변을 입력해주세요..."></textarea>
+      <button class="send-btn" id="send-btn" onclick="submitAnswer()">제출 →</button>
+    </div>
+    <div class="round-info">
+      <span id="round-text">1라운드 · 첫 번째 답변</span>
+      <div class="round-dots" id="round-dots">
+        <div class="dot active" id="dot-1"></div>
+        <div class="dot" id="dot-2"></div>
+        <div class="dot" id="dot-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="complete-area" style="display:none;">
+    <div class="complete-card">
+      <div class="complete-icon">🎯</div>
+      <div class="complete-title">코칭 완료!</div>
+      <div class="complete-sub">3라운드 코칭이 끝났어요. 최종 피드백을 확인하세요.</div>
+      <div class="score-card" id="final-score"></div>
+    </div>
+    <div style="text-align:center;">
+      <button class="restart-btn" onclick="restartCoach()">같은 질문 다시 하기</button>
+      <button class="back-btn" onclick="goBack()">← 다른 질문 선택</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 로그인 계정
+const ACCOUNTS = { 'ashley': 'highavenue2024' };
+let pendingQ = null;
+
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value.trim();
+  if (ACCOUNTS[id] && ACCOUNTS[id] === pw) {
+    closeLogin();
+    if (pendingQ) {
+      const {type, question, hint} = pendingQ;
+      pendingQ = null;
+      _startCoach(type, question, hint);
+    }
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function closeLogin() {
+  document.getElementById('login-modal').classList.remove('show');
+  document.getElementById('login-id').value = '';
+  document.getElementById('login-pw').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  pendingQ = null;
+}
+
+let isLoggedIn = false;
+
+let currentQ = {};
+let round = 0;
+let answers = [];
+let aiResponses = [];
+let isLoading = false;
+
+function switchType(type, el) {
+  document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.q-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + type).classList.add('active');
+}
+
+function startCoach(type, question, hint) {
+  if (!isLoggedIn) {
+    pendingQ = {type, question, hint};
+    document.getElementById('login-modal').classList.add('show');
+    setTimeout(() => document.getElementById('login-id').focus(), 100);
+    return;
+  }
+  _startCoach(type, question, hint);
+}
+
+function _startCoach(type, question, hint) {
+  isLoggedIn = true;
+  currentQ = { type, question, hint };
+  round = 0;
+  answers = [];
+  aiResponses = [];
+
+  document.getElementById('screen-select').style.display = 'none';
+  document.getElementById('screen-coach').style.display = 'block';
+  document.getElementById('coach-type-label').textContent = type;
+  document.getElementById('coach-question-text').textContent = question;
+  document.getElementById('coach-desc-text').textContent = hint;
+  document.getElementById('chat-area').innerHTML = '<div class="chat-empty" id="chat-empty">답변을 입력하면 AI 코칭이 시작됩니다</div>';
+  document.getElementById('input-area').style.display = 'block';
+  document.getElementById('complete-area').style.display = 'none';
+  document.getElementById('answer-input').value = '';
+  updateRoundUI();
+}
+
+function updateRoundUI() {
+  const labels = ['1라운드 · 첫 번째 답변', '2라운드 · AI 질문에 답하기', '3라운드 · 마지막 심화 답변'];
+  document.getElementById('round-text').textContent = labels[round] || '';
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (i - 1 < round) { dot.className = 'dot done'; }
+    else if (i - 1 === round) { dot.className = 'dot active'; }
+    else { dot.className = 'dot'; }
+  }
+}
+
+function addBubble(type, label, text) {
+  const empty = document.getElementById('chat-empty');
+  if (empty) empty.remove();
+  const area = document.getElementById('chat-area');
+  const row = document.createElement('div');
+  row.className = 'chat-row' + (type === 'student' ? ' right' : '');
+
+  if (type === 'ai') {
+    row.innerHTML = `<div class="ai-avatar">AI</div><div class="bubble bubble-ai"><div class="b-label">${label}</div>${text}</div>`;
+  } else if (type === 'student') {
+    row.innerHTML = `<div class="bubble bubble-student"><div class="b-label">${label}</div>${text}</div>`;
+  } else if (type === 'feedback') {
+    row.innerHTML = `<div class="ai-avatar">AI</div><div class="bubble bubble-feedback">${text}</div>`;
+  }
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addTyping() {
+  const empty = document.getElementById('chat-empty');
+  if (empty) empty.remove();
+  const area = document.getElementById('chat-area');
+  const row = document.createElement('div');
+  row.className = 'chat-row';
+  row.id = 'typing-row';
+  row.innerHTML = `<div class="ai-avatar">AI</div><div class="typing"><span></span><span></span><span></span></div>`;
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-row');
+  if (t) t.remove();
+}
+
+async function submitAnswer() {
+  if (isLoading) return;
+  const text = document.getElementById('answer-input').value.trim();
+  if (!text) return;
+
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+  document.getElementById('answer-input').value = '';
+
+  const roundLabel = ['첫 번째 답변', '두 번째 답변', '세 번째 답변'][round];
+  addBubble('student', roundLabel, text);
+  answers.push(text);
+  addTyping();
+
+  try {
+    if (round < 2) {
+      // 코칭 질문 생성
+      const prompt = buildCoachPrompt(text);
+      const res = await callClaude(prompt);
+      removeTyping();
+      addBubble('ai', `AI 코칭 질문 ${round + 1}`, res);
+      aiResponses.push(res);
+      round++;
+      updateRoundUI();
+      document.getElementById('answer-input').placeholder = 'AI 질문에 답변해주세요...';
+      document.getElementById('input-label').textContent = `${round + 1}라운드 답변`;
+    } else {
+      // 최종 피드백
+      const prompt = buildFinalPrompt();
+      const res = await callClaude(prompt);
+      removeTyping();
+
+      let parsed;
+      try {
+        parsed = JSON.parse(res.replace(/```json|```/g,'').trim());
+      } catch(e) {
+        parsed = { summary: res, scores: {논리성:70,구체성:70,미래연결:70}, good: '답변 구조가 잡혔어요', bad: '더 구체적인 사례가 필요해요', final: res };
+      }
+
+      const feedbackHTML = `
+        <div class="b-label">최종 피드백</div>
+        <div style="font-size:14px;line-height:1.7;margin-bottom:12px;">${parsed.summary}</div>
+        <div class="score-row">
+          <span class="score-badge">논리성 ${parsed.scores.논리성}점</span>
+          <span class="score-badge">구체성 ${parsed.scores.구체성}점</span>
+          <span class="score-badge">미래연결 ${parsed.scores.미래연결}점</span>
+        </div>
+        <div class="good-point">✓ ${parsed.good}</div>
+        <div class="bad-point">△ ${parsed.bad}</div>
+      `;
+      addBubble('feedback', '', feedbackHTML);
+
+      document.getElementById('input-area').style.display = 'none';
+      document.getElementById('complete-area').style.display = 'block';
+
+      const avg = Math.round((parsed.scores.논리성 + parsed.scores.구체성 + parsed.scores.미래연결) / 3);
+      document.getElementById('final-score').innerHTML = `
+        <div class="score-item"><div class="score-num">${parsed.scores.논리성}</div><div class="score-label">논리성</div></div>
+        <div class="score-item"><div class="score-num">${parsed.scores.구체성}</div><div class="score-label">구체성</div></div>
+        <div class="score-item"><div class="score-num">${parsed.scores.미래연결}</div><div class="score-label">미래연결</div></div>
+      `;
+    }
+  } catch(e) {
+    removeTyping();
+    addBubble('ai', '오류', '잠시 오류가 발생했어요. 다시 시도해주세요.');
+  }
+
+  isLoading = false;
+  document.getElementById('send-btn').disabled = false;
+}
+
+function buildCoachPrompt(answer) {
+  return `당신은 ${currentQ.type} 면접 코치입니다.
+
+출제 질문: "${currentQ.question}"
+학생 답변: "${answer}"
+${answers.length > 1 ? `이전 AI 질문: "${aiResponses[aiResponses.length-1]}"` : ''}
+
+이 답변을 읽고 학생이 더 깊이 생각할 수 있도록 파고드는 코칭 질문 1개를 생성하세요.
+
+규칙:
+- 답변에서 부족한 부분(논리, 구체성, 미래연결)을 파고드세요
+- "왜", "어떻게", "구체적으로" 로 시작하는 질문
+- 2-3문장 이내
+- 친근하지만 날카롭게
+- 한국어로
+
+코칭 질문만 답하세요. 다른 설명 없이.`;
+}
+
+function buildFinalPrompt() {
+  return `당신은 ${currentQ.type} 면접 코치입니다.
+
+출제 질문: "${currentQ.question}"
+학생의 3번 답변 과정:
+1차 답변: "${answers[0]}"
+AI 코칭 질문 1: "${aiResponses[0]}"
+2차 답변: "${answers[1] || ''}"
+AI 코칭 질문 2: "${aiResponses[1] || ''}"
+3차 답변: "${answers[2] || ''}"
+
+전체 과정을 평가하고 JSON으로만 응답하세요:
+{
+  "summary": "전체 답변 발전 과정 평가 (2-3문장)",
+  "scores": {"논리성": 0~100, "구체성": 0~100, "미래연결": 0~100},
+  "good": "가장 잘한 점 한 가지 (1문장)",
+  "bad": "개선이 필요한 점 한 가지 (1문장)"
+}`;
+}
+
+async function callClaude(prompt) {
+  const GEMINI_KEY = 'AIzaSyAzAp0Wdg_HXQeVjgQyr7tBGQeJnW_J5uk';
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }]
+    })
+  });
+  const data = await res.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+function restartCoach() {
+  startCoach(currentQ.type, currentQ.question, currentQ.hint);
+}
+
+function goBack() {
+  document.getElementById('screen-coach').style.display = 'none';
+  document.getElementById('screen-select').style.display = 'block';
+}
+
+// Enter로 제출
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.ctrlKey) submitAnswer();
+});
+</script>
+</body>
+</html>
