@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>학교별 질문 묶음 | 하이애비뉴 문제아</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box} body{font-family:'Noto Sans KR',sans-serif;background:#F8F6F3;color:#1A1A2E}
+    .nav{background:#1A1A2E;padding:14px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.nav a{text-decoration:none}.nav-back{color:rgba(255,255,255,.5);font-size:13px}.nav-logo{font-family:'Noto Serif KR',serif;color:#fff;font-size:16px;font-weight:700}.nav-contact{color:rgba(255,255,255,.4);font-size:12px}
+    .hero{background:#1A1A2E;padding:76px 24px;text-align:center}.hero-tag{font-size:10px;letter-spacing:4px;color:#8B1A2F;text-transform:uppercase;margin-bottom:16px;display:block}.hero-title{font-family:'Noto Serif KR',serif;font-size:40px;color:white;line-height:1.4;margin-bottom:14px}.hero-title em{color:#E8A0AA;font-style:normal}.hero-sub{font-size:15px;color:rgba(255,255,255,.58);line-height:1.9;max-width:760px;margin:0 auto 28px}.hero-btn{display:inline-block;padding:16px 38px;background:white;color:#1A1A2E;border-radius:8px;text-decoration:none;font-family:'Noto Serif KR',serif;font-weight:700}
+    .section{padding:80px 24px;background:white}.section-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8B1A2F;margin-bottom:14px;text-align:center;display:block}.section-title{font-family:'Noto Serif KR',serif;font-size:28px;line-height:1.5;text-align:center;margin-bottom:14px}.section-desc{font-size:14px;color:#888;line-height:1.9;text-align:center;max-width:700px;margin:0 auto 46px}
+    .school-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.school-card{background:#F7F5F2;border-radius:14px;padding:28px 24px;border:1px solid #EEE}.school-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}.school-name{font-family:'Noto Serif KR',serif;font-size:22px}.school-badge{font-size:11px;padding:6px 10px;border-radius:20px;background:#1A1A2E;color:#fff;white-space:nowrap}.school-desc{font-size:13px;color:#777;line-height:1.8;margin-bottom:18px}.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.pill{font-size:11px;padding:5px 10px;border-radius:20px;background:white;color:#666;border:1px solid #E4E1DC}
+    .sample-box{background:white;border-radius:10px;padding:14px 16px;margin-bottom:18px}.sample-label{font-size:10px;letter-spacing:2px;color:#AAA;margin-bottom:8px}.sample-list{display:grid;gap:8px}.sample-item{font-size:13px;line-height:1.7;color:#1A1A2E}
+    .card-btn{display:inline-block;padding:12px 22px;background:#1A1A2E;color:white;border-radius:8px;text-decoration:none;font-size:14px}.card-btn:hover,.hero-btn:hover{opacity:.88}
+    .roadmap{background:#F7F5F2;padding:80px 24px}.road-grid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.road-card{background:white;border-radius:12px;padding:22px 18px}.road-n{width:30px;height:30px;border-radius:50%;background:#8B1A2F;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:14px}.road-card h3{font-size:15px;margin-bottom:8px}.road-card p{font-size:12px;color:#888;line-height:1.8}
+    .mini{padding:80px 24px;background:white}.mini-grid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.mini-card{background:#F7F5F2;border-radius:12px;padding:24px 20px}.mini-card h3{font-size:16px;margin-bottom:10px}.mini-card p{font-size:13px;color:#777;line-height:1.8}
+    .cta{background:#1A1A2E;padding:72px 24px;text-align:center}.cta-title{font-family:'Noto Serif KR',serif;font-size:28px;color:white;line-height:1.5;margin-bottom:12px}.cta-desc{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:30px}.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.btn{display:inline-block;padding:14px 28px;border-radius:8px;text-decoration:none}.btn-white{background:white;color:#1A1A2E}.btn-outline{border:1.5px solid rgba(255,255,255,.3);color:white}
+    @media(max-width:900px){.school-grid,.road-grid,.mini-grid{grid-template-columns:1fr}.nav{padding:14px 20px}.hero{padding:56px 18px}.hero-title{font-size:30px}.section,.roadmap,.mini,.cta{padding:56px 18px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-back" href="interview_plus.html">← 논구술 트랙</a>
+    <a class="nav-logo" href="index.html">문제아 問·題·兒</a>
+    <div class="nav-contact">학교별 질문 묶음</div>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-tag">School-Specific Interview Pack</span>
+    <div class="hero-title">학교별 질문 결을 모아둔<br><em>새 버전</em>이에요</div>
+    <div class="hero-sub">공통 기출만 돌리면 답이 비슷해져요.<br>학교 분위기와 평가 포인트에 맞춰 질문 묶음을 따로 빼두면 수업도 훨씬 선명해집니다.</div>
+    <a class="hero-btn" href="coach_school.html">학교별 코칭 시작하기 →</a>
+  </section>
+
+  <section class="section">
+    <span class="section-tag">School Packs</span>
+    <div class="section-title">학교마다 잘 먹히는 질문의 결이 다릅니다</div>
+    <div class="section-desc">아래 묶음은 데모용으로 바로 테스트할 수 있게 만든 버전이에요. 각 학교마다 8문항씩, 총 40문항이 들어 있습니다.</div>
+    <div class="school-grid">
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">명덕외고</div><div class="school-badge">8문항</div></div>
+        <div class="school-desc">지원동기와 자기주도학습의 구조가 선명해야 하는 학교형. “왜 여기냐”와 “어떻게 성장해왔냐”를 붙이는 연습에 좋습니다.</div>
+        <div class="pill-row"><span class="pill">지원동기</span><span class="pill">자기주도학습</span><span class="pill">학교 적합성</span></div>
+        <div class="sample-box"><div class="sample-label">SAMPLE QUESTIONS</div><div class="sample-list"><div class="sample-item">· 명덕외고를 선택한 가장 분명한 이유는 무엇인가요?</div><div class="sample-item">· 성적이 흔들렸던 시기에 어떻게 다시 끌어올렸나요?</div><div class="sample-item">· 명덕외고 3년이 끝났을 때 어떤 학생으로 기억되고 싶나요?</div></div></div>
+        <a class="card-btn" href="coach_school.html">명덕외고 질문 풀기</a>
+      </div>
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">이화외고</div><div class="school-badge">8문항</div></div>
+        <div class="school-desc">공동체성, 배려, 꾸준함, 자기이해를 부드럽지만 선명하게 보여줘야 하는 학교형. 공감만으로 끝내지 않고 행동까지 말해야 합니다.</div>
+        <div class="pill-row"><span class="pill">공동체</span><span class="pill">배려</span><span class="pill">자기관리</span></div>
+        <div class="sample-box"><div class="sample-label">SAMPLE QUESTIONS</div><div class="sample-list"><div class="sample-item">· 배려와 공감이 공동체에서 왜 중요하다고 생각하나요?</div><div class="sample-item">· 혼자 공부할 때와 함께 공부할 때를 어떻게 조절하나요?</div><div class="sample-item">· 여학생 리더십은 어떤 모습이어야 한다고 생각하나요?</div></div></div>
+        <a class="card-btn" href="coach_school.html">이화외고 질문 풀기</a>
+      </div>
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">서울국제고</div><div class="school-badge">8문항</div></div>
+        <div class="school-desc">국제 감각을 영어 실력으로만 말하면 약합니다. 사회 이슈, 공공성, 다양한 시선에 대한 태도까지 보여줘야 점수가 나옵니다.</div>
+        <div class="pill-row"><span class="pill">국제감각</span><span class="pill">사회이슈</span><span class="pill">공공성</span></div>
+        <div class="sample-box"><div class="sample-label">SAMPLE QUESTIONS</div><div class="sample-list"><div class="sample-item">· 국제 감각이란 무엇이라고 생각하나요?</div><div class="sample-item">· 다양한 배경의 친구들과 함께할 때 가장 필요한 태도는 무엇인가요?</div><div class="sample-item">· 글로벌 인재를 본인 말로 다시 정의해보세요.</div></div></div>
+        <a class="card-btn" href="coach_school.html">서울국제고 질문 풀기</a>
+      </div>
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">하나고</div><div class="school-badge">8문항</div></div>
+        <div class="school-desc">기숙사·고강도 학업·협업·리더십이 함께 걸리는 학교형. 센 환경에서도 무너지지 않는 구조를 보여주면 강합니다.</div>
+        <div class="pill-row"><span class="pill">기숙사</span><span class="pill">학업관리</span><span class="pill">협업</span></div>
+        <div class="sample-box"><div class="sample-label">SAMPLE QUESTIONS</div><div class="sample-list"><div class="sample-item">· 기숙사 생활에서 가장 중요한 태도는 무엇이라고 생각하나요?</div><div class="sample-item">· 압박이 큰 환경에서 본인을 무너지지 않게 하는 방법은 무엇인가요?</div><div class="sample-item">· 하나고가 왜 본인에게 도전이자 기회라고 생각하나요?</div></div></div>
+        <a class="card-btn" href="coach_school.html">하나고 질문 풀기</a>
+      </div>
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">외대부고</div><div class="school-badge">8문항</div></div>
+        <div class="school-desc">강한 학업 밀도와 영어 활용, 자기관리, 성장 서사를 함께 보여줘야 하는 학교형. 실력 좋은 친구들 사이에서의 태도도 중요합니다.</div>
+        <div class="pill-row"><span class="pill">영어활용</span><span class="pill">자기관리</span><span class="pill">성장서사</span></div>
+        <div class="sample-box"><div class="sample-label">SAMPLE QUESTIONS</div><div class="sample-list"><div class="sample-item">· 영어를 과목이 아니라 도구로 사용한 경험이 있나요?</div><div class="sample-item">· 외대부고가 본인을 뽑았을 때 얻는 장점은 무엇인가요?</div><div class="sample-item">· 실력이 뛰어난 친구들 사이에서 위축되지 않으려면 무엇이 필요하다고 생각하나요?</div></div></div>
+        <a class="card-btn" href="coach_school.html">외대부고 질문 풀기</a>
+      </div>
+      <div class="school-card">
+        <div class="school-top"><div class="school-name">공통 확장 아이디어</div><div class="school-badge">다음 단계</div></div>
+        <div class="school-desc">여기서 더 키우려면 학교별로 “상위권 답변 예시”, “꼬리질문 20개”, “자소서 연결 문항”까지 붙이면 진짜 수업 상품처럼 보입니다.</div>
+        <div class="pill-row"><span class="pill">답변 예시</span><span class="pill">꼬리질문</span><span class="pill">학교별 자소서형</span></div>
+        <div class="sample-box"><div class="sample-label">NEXT VERSION</div><div class="sample-list"><div class="sample-item">· 명덕외고 20문항 집중팩</div><div class="sample-item">· 하나고 기숙사/적응 킬러 질문팩</div><div class="sample-item">· 국제고 시사/가치판단 심화팩</div></div></div>
+        <a class="card-btn" href="coach_school.html">지금 버전 테스트하기</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="roadmap">
+    <span class="section-tag">How to Use</span>
+    <div class="section-title">지금 단계에서 딱 좋은 테스트 흐름</div>
+    <div class="section-desc">아직 정식 배포 전이면, 아래 정도만 돌아가도 데모로 충분히 강합니다.</div>
+    <div class="road-grid">
+      <div class="road-card"><div class="road-n">1</div><h3>학교 선택</h3><p>학생 목표 학교를 먼저 고릅니다. 그러면 질문의 결이 선명해져요.</p></div>
+      <div class="road-card"><div class="road-n">2</div><h3>질문 1개 선택</h3><p>지원동기, 자기주도학습, 인성 중 하나만 골라 바로 시작합니다.</p></div>
+      <div class="road-card"><div class="road-n">3</div><h3>3라운드 코칭</h3><p>첫 답변 → 꼬리질문 → 수정 답변 흐름으로 답을 끌어올립니다.</p></div>
+      <div class="road-card"><div class="road-n">4</div><h3>다음 질문 추천</h3><p>한 질문 끝나면 같은 학교의 다른 축 질문으로 넘어가면 됩니다.</p></div>
+    </div>
+  </section>
+
+  <section class="mini">
+    <span class="section-tag">Why This Version</span>
+    <div class="section-title">이 버전이 좋은 이유</div>
+    <div class="section-desc">질문만 많아도 산만해질 수 있어서, 학교와 축을 동시에 잡아주는 버전으로 정리했어요.</div>
+    <div class="mini-grid">
+      <div class="mini-card"><h3>수업용으로 바로 사용 가능</h3><p>학생한테 “너는 명덕외고 묶음부터 풀자”라고 말하기 쉬운 구조예요.</p></div>
+      <div class="mini-card"><h3>브랜딩에도 잘 맞음</h3><p>애슐리박 스타일의 학교별 분석력과 맞춤 코칭 이미지를 주기 좋습니다.</p></div>
+      <div class="mini-card"><h3>다음 확장도 쉬움</h3><p>여기서 학교별 20문항, 답변 예시, PDF 교재형 버전으로 계속 뻗을 수 있어요.</p></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-title">이제 학교별 질문으로<br>바로 데모 돌려보세요</div>
+    <div class="cta-desc">화면 테스트 · 질문 추가 · 문구 다듬기 · 흐름 확인용으로 맞춘 버전입니다.</div>
+    <div class="cta-btns">
+      <a class="btn btn-white" href="coach_school.html">학교별 코칭 시작하기 →</a>
+      <a class="btn btn-outline" href="interview_plus.html">기존 논구술 버전 보기</a>
+    </div>
+  </section>
+</body>
+</html>
