@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>논술형 코칭 | 문제아</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Noto Sans KR',sans-serif;background:#F8F6F3;color:#1A1A2E;}
+    .nav{background:#1A1A2E;padding:14px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+    .nav-back{color:rgba(255,255,255,0.55);font-size:13px;text-decoration:none;}
+    .nav-logo{font-family:'Noto Serif KR',serif;color:white;font-size:16px;font-weight:700;text-decoration:none;}
+    .nav-sub{color:rgba(255,255,255,0.35);font-size:12px;}
+    .hero{background:#1A1A2E;padding:72px 48px;text-align:center;}
+    .hero-tag{font-size:10px;letter-spacing:4px;color:#8B1A2F;text-transform:uppercase;margin-bottom:14px;display:block;}
+    .hero-title{font-family:'Noto Serif KR',serif;font-size:36px;color:white;line-height:1.45;margin-bottom:14px;}
+    .hero-title em{font-style:normal;color:#E8A0AA;}
+    .hero-desc{font-size:14px;color:rgba(255,255,255,0.56);line-height:1.85;max-width:760px;margin:0 auto;}
+    .section{padding:72px 48px;background:white;}
+    .bg-light{padding:72px 48px;background:#F7F5F2;}
+    .section-tag{font-size:10px;letter-spacing:3px;color:#8B1A2F;text-transform:uppercase;margin-bottom:12px;text-align:center;display:block;}
+    .section-title{font-family:'Noto Serif KR',serif;font-size:28px;color:#1A1A2E;text-align:center;line-height:1.5;margin-bottom:14px;}
+    .section-desc{font-size:14px;color:#888;line-height:1.85;text-align:center;max-width:720px;margin:0 auto 40px;}
+    .feature-grid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+    .feature-card{background:white;border:1px solid #EEE;border-radius:10px;padding:24px;}
+    .feature-card h3{font-size:16px;color:#1A1A2E;margin-bottom:8px;}
+    .feature-card p{font-size:13px;color:#777;line-height:1.75;}
+    .essay-wrap{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:22px;align-items:start;}
+    .essay-card{background:white;border-radius:12px;padding:28px;border:1px solid #EEE;}
+    .essay-badge{font-size:10px;letter-spacing:2px;color:#8B1A2F;margin-bottom:10px;text-transform:uppercase;}
+    .essay-title{font-family:'Noto Serif KR',serif;font-size:22px;line-height:1.5;margin-bottom:18px;}
+    .passage{background:#F7F5F2;border-radius:8px;padding:18px 18px 4px;margin-bottom:18px;}
+    .passage h4{font-size:13px;margin-bottom:12px;color:#1A1A2E;}
+    .passage p{font-size:13px;line-height:1.85;color:#333;margin-bottom:14px;}
+    .questions{background:#FFF8F5;border:1px solid #F5D5CC;border-radius:8px;padding:18px;}
+    .questions h4{font-size:13px;color:#8B1A2F;margin-bottom:10px;}
+    .questions li{font-size:13px;color:#5A423B;line-height:1.8;margin-left:18px;margin-bottom:6px;}
+    .side-card{background:#1A1A2E;border-radius:12px;padding:26px;color:white;}
+    .side-title{font-family:'Noto Serif KR',serif;font-size:20px;line-height:1.45;margin-bottom:12px;}
+    .side-card p{font-size:13px;line-height:1.8;color:rgba(255,255,255,0.68);margin-bottom:18px;}
+    .side-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+    .side-item{background:rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.88);}
+    .tip{background:#F0EDE8;border-radius:8px;padding:16px;font-size:13px;line-height:1.8;color:#444;}
+    .tip strong{color:#8B1A2F;}
+    .set-grid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .set-card{background:white;border-radius:10px;padding:22px;border-left:4px solid #1A1A2E;}
+    .set-card.burg{border-left-color:#8B1A2F;}
+    .set-card h3{font-size:17px;margin-bottom:10px;}
+    .set-card p{font-size:13px;color:#777;line-height:1.75;margin-bottom:12px;}
+    .mini-q{background:#F7F5F2;border-radius:8px;padding:12px 14px;font-size:12px;color:#444;line-height:1.7;}
+    .cta{background:linear-gradient(135deg,#1A1A2E 0%,#8B1A2F 100%);padding:64px 48px;text-align:center;}
+    .cta-title{font-family:'Noto Serif KR',serif;font-size:28px;color:white;line-height:1.5;margin-bottom:10px;}
+    .cta-desc{font-size:14px;color:rgba(255,255,255,0.68);line-height:1.8;margin-bottom:28px;}
+    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    .btn{display:inline-block;padding:14px 26px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;transition:opacity .2s;}
+    .btn:hover{opacity:.88;}
+    .btn-white{background:white;color:#1A1A2E;}
+    .btn-outline{border:1.5px solid rgba(255,255,255,0.3);color:white;background:transparent;}
+    .footer{background:#0F0F1E;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+    .footer-logo{font-family:'Noto Serif KR',serif;color:white;font-size:13px;}
+    .footer-info{color:rgba(255,255,255,0.35);font-size:12px;}
+    @media(max-width:860px){
+      .nav,.hero,.section,.bg-light,.cta,.footer{padding-left:24px;padding-right:24px;}
+      .feature-grid,.set-grid,.essay-wrap{grid-template-columns:1fr;}
+      .hero-title{font-size:30px;}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-back" href="interview_with_essay.html">← 논구술 트랙으로</a>
+    <a class="nav-logo" href="index (1).html">문제아 問·題·兒</a>
+    <div class="nav-sub">논술형 코칭</div>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-tag">essay coaching track</span>
+    <div class="hero-title">짧은 면접 답변이 아니라,<br><em>긴 제시문을 읽고 구조화하는 힘</em>을 봅니다.</div>
+    <div class="hero-desc">
+      논술형 코칭은 제시문을 읽고 핵심을 정리한 뒤, 관점 비교 · 입장 제시 · 해결방안 제안까지
+      길게 써내는 훈련입니다.
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="section-tag">why separate page</span>
+    <div class="section-title">논술형은 기존 면접 코칭과 완전히 다릅니다</div>
+    <div class="section-desc">그래서 따로 빼는 게 맞아요. 사용자가 헷갈리지 않게 “짧은 답변형”과 “긴 서술형”을 분리했습니다.</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>긴 제시문 읽기</h3>
+        <p>정보를 단순히 읽는 게 아니라, 쟁점과 관점을 구분하고 핵심을 요약하는 단계가 먼저 필요합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>질문 2~3개 구조화</h3>
+        <p>입장 제시, 비교 분석, 해결방안 제안처럼 서로 다른 종류의 질문을 한 번에 다뤄야 합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>논리적인 장문 답변</h3>
+        <p>짧은 감상문이 아니라 두괄식 구조, 근거, 사례, 미래 연결까지 갖춘 답변이 필요합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-light">
+    <span class="section-tag">sample set</span>
+    <div class="section-title">예시 논술형 문제</div>
+    <div class="section-desc">이런 식의 문제를 계속 추가해가면 됩니다. 지금은 데모용으로 1세트를 먼저 넣어두었어요.</div>
+    <div class="essay-wrap">
+      <div class="essay-card">
+        <div class="essay-badge">사회 · AI · 공정성</div>
+        <div class="essay-title">AI 판사의 도입은 공정성을 높일 수 있는가?</div>
+        <div class="passage">
+          <h4>[제시문]</h4>
+          <p><strong>(가)</strong> 최근 인공지능은 의료, 금융, 교육뿐 아니라 법률 분야에서도 빠르게 활용되고 있다. 인공지능은 방대한 판례와 데이터를 분석해 유사 사건을 빠르게 비교할 수 있고, 감정에 흔들리지 않은 채 일정한 기준으로 판단을 내릴 수 있다는 점에서 장점을 가진다.</p>
+          <p><strong>(나)</strong> 그러나 법적 판단은 단순히 규칙을 적용하는 일만으로 끝나지 않는다. 피고인의 반성 정도, 피해자의 상황, 사회적 파장처럼 수치로 환산하기 어려운 요소들도 중요하다. 따라서 인간의 공감 능력과 맥락 이해 없이 기계적 판결만 이루어진다면 오히려 정의에 어긋날 수 있다는 우려도 크다.</p>
+          <p><strong>(다)</strong> 한편 어떤 사람들은 공정성이란 같은 기준을 일률적으로 적용하는 것이라고 보고, 또 다른 사람들은 상황에 따라 적절한 차이를 두는 것이 더 공정하다고 주장한다. 결국 AI 판사의 도입 논쟁은 기술의 정확성만이 아니라 ‘공정성’을 어떻게 정의할 것인가의 문제와도 연결된다.</p>
+        </div>
+        <div class="questions">
+          <h4>[문제]</h4>
+          <ol>
+            <li>제시문을 바탕으로 AI 판사의 장점과 한계를 각각 정리하시오.</li>
+            <li>공정성의 관점에서 AI 판사 도입에 대한 자신의 입장을 논하시오.</li>
+            <li>AI와 인간 판사가 상호보완적으로 협력할 수 있는 방안을 제시하시오.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-title">이 페이지에서 앞으로 넣으면 좋은 것</div>
+        <p>지금은 데모용 1세트만 넣었지만, 이 아래로 계속 쌓아가면 논술형 전용 라이브러리가 됩니다.</p>
+        <div class="side-list">
+          <div class="side-item">1. 사회형 · 과학기술형 · 교육형 · 환경형 문제 묶음</div>
+          <div class="side-item">2. 상위권 답변 구조 예시</div>
+          <div class="side-item">3. 학생이 직접 써보는 입력창</div>
+          <div class="side-item">4. AI 첨삭/피드백 영역</div>
+        </div>
+        <div class="tip">
+          <strong>팁</strong><br>
+          지금 단계에서는 완전한 첨삭 기능보다, 먼저 “문항 라이브러리 + 예시 문제 페이지”를 탄탄하게 만드는 게 더 좋아요.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="section-tag">next sets</span>
+    <div class="section-title">다음으로 붙이기 좋은 주제들</div>
+    <div class="section-desc">사회형 문제를 중심으로 계속 확장하기 좋은 세트입니다.</div>
+    <div class="set-grid">
+      <div class="set-card">
+        <h3>환경 vs 경제 성장</h3>
+        <p>기후위기 시대에 환경 규제 강화가 필요한지, 경제 성장과 어떻게 조화시킬지 묻는 문제</p>
+        <div class="mini-q">핵심 질문: 충돌 원인 분석 / 정책 방안 / 개인과 정부의 역할 구분</div>
+      </div>
+      <div class="set-card burg">
+        <h3>교육 격차와 기술</h3>
+        <p>사교육, 지역 격차, 디지털 격차 문제를 분석하고 AI가 해결책이 될 수 있는지 판단하는 문제</p>
+        <div class="mini-q">핵심 질문: 원인 분석 / 기술의 가능성과 한계 / 현실적 대안 제시</div>
+      </div>
+      <div class="set-card burg">
+        <h3>SNS와 민주주의</h3>
+        <p>정보 접근성 확대와 동시에 허위 정보, 여론 왜곡 문제를 함께 바라보는 문제</p>
+        <div class="mini-q">핵심 질문: 개인과 사회 영향 / 건강한 사용 문화 / 플랫폼 책임</div>
+      </div>
+      <div class="set-card">
+        <h3>플랫폼 노동과 보호</h3>
+        <p>유연한 노동 환경과 낮은 안정성 사이에서 노동의 개념이 어떻게 바뀌고 있는지 묻는 문제</p>
+        <div class="mini-q">핵심 질문: 장단점 비교 / 정책 방향 / 새로운 보호 장치 제안</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-title">논술형 코칭 페이지,<br>이제 따로 굴릴 수 있어요</div>
+    <div class="cta-desc">기존 면접 코칭과 섞지 않고, 장문형 제시문 문제 전용 페이지로 분리했습니다.</div>
+    <div class="cta-btns">
+      <a class="btn btn-white" href="interview_with_essay.html">논구술 트랙으로 돌아가기</a>
+      <a class="btn btn-outline" href="school_bundle.html">학교별 코칭 보기</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">문제아 問·題·兒</div>
+    <div class="footer-info">논술형 코칭 데모 페이지</div>
+  </footer>
+</body>
+</html>

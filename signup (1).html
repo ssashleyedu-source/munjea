@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 | 문제아 問·題·兒</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Noto Sans KR',sans-serif;background:#F8F6F3;color:#1A1A2E;min-height:100vh;display:flex;flex-direction:column;}
+
+    /* NAV */
+    .nav{background:#1A1A2E;padding:14px 40px;display:flex;justify-content:space-between;align-items:center;}
+    .nav-logo{font-family:'Noto Serif KR',serif;color:white;font-size:15px;font-weight:700;text-decoration:none;}
+    .nav-back{color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;transition:color 0.2s;}
+    .nav-back:hover{color:white;}
+
+    /* 메인 레이아웃 */
+    .layout{display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:calc(100vh - 52px);}
+
+    /* 왼쪽 브랜딩 패널 */
+    .brand-panel{background:#1A1A2E;padding:60px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+    .brand-panel::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(139,26,47,0.3) 0%,transparent 70%);pointer-events:none;}
+    .brand-panel::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(139,26,47,0.15) 0%,transparent 70%);pointer-events:none;}
+
+    .brand-tag{font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.85);text-transform:uppercase;margin-bottom:24px;display:block;font-weight:500;}
+    .brand-title{font-family:'Noto Serif KR',serif;font-size:34px;font-weight:700;color:white;line-height:1.45;margin-bottom:20px;}
+    .brand-title em{color:#E8A0AA;font-style:normal;}
+    .brand-desc{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.9;margin-bottom:40px;}
+
+    .feature-list{display:flex;flex-direction:column;gap:14px;}
+    .feature-item{display:flex;align-items:flex-start;gap:12px;}
+    .feature-dot{width:6px;height:6px;border-radius:50%;background:#8B1A2F;flex-shrink:0;margin-top:7px;}
+    .feature-text{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;}
+    .feature-text strong{color:white;font-weight:500;}
+
+    .brand-quote{margin-top:40px;padding:18px 20px;border-left:2px solid #8B1A2F;background:rgba(255,255,255,0.04);border-radius:0 8px 8px 0;}
+    .brand-quote p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;font-style:italic;}
+    .brand-quote cite{display:block;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.3);font-style:normal;letter-spacing:1px;}
+
+    /* 오른쪽 폼 패널 */
+    .form-panel{background:#F8F6F3;padding:60px 56px;display:flex;flex-direction:column;justify-content:center;}
+
+    .form-header{margin-bottom:36px;}
+    .form-header-tag{font-size:10px;letter-spacing:3px;color:#8B1A2F;text-transform:uppercase;margin-bottom:10px;display:block;}
+    .form-header h1{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700;color:#1A1A2E;margin-bottom:8px;}
+    .form-header p{font-size:13px;color:#999;line-height:1.7;}
+
+    .form-group{margin-bottom:18px;}
+    .form-label{font-size:12px;color:#555;font-weight:500;margin-bottom:7px;display:block;letter-spacing:0.5px;}
+    .form-input{width:100%;padding:13px 16px;border:1.5px solid #E0DDD8;border-radius:8px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:#1A1A2E;background:white;transition:all 0.2s;outline:none;}
+    .form-input:focus{border-color:#1A1A2E;box-shadow:0 0 0 3px rgba(26,26,46,0.06);}
+    .form-input::placeholder{color:#C5C0BC;}
+    .form-hint{font-size:11px;color:#BBB;margin-top:5px;}
+
+    /* 구분선 */
+    .divider{display:flex;align-items:center;gap:12px;margin:8px 0 18px;}
+    .divider-line{flex:1;height:1px;background:#E8E4E0;}
+    .divider-text{font-size:11px;color:#BBB;white-space:nowrap;}
+
+    /* 학교 선택 */
+    .school-select{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:4px;}
+    .school-btn{padding:9px 6px;border:1.5px solid #E0DDD8;border-radius:6px;background:white;font-size:11px;font-family:'Noto Sans KR',sans-serif;color:#888;cursor:pointer;text-align:center;transition:all 0.15s;}
+    .school-btn:hover{border-color:#1A1A2E;color:#1A1A2E;}
+    .school-btn.active{border-color:#8B1A2F;background:#8B1A2F;color:white;}
+
+    /* 제출 버튼 */
+    .submit-btn{width:100%;padding:15px;background:#1A1A2E;color:white;border:none;border-radius:8px;font-size:15px;font-family:'Noto Serif KR',serif;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:8px;letter-spacing:0.5px;}
+    .submit-btn:hover{background:#8B1A2F;transform:translateY(-1px);box-shadow:0 6px 20px rgba(139,26,47,0.25);}
+
+    .login-link{text-align:center;margin-top:20px;font-size:13px;color:#AAA;}
+    .login-link a{color:#1A1A2E;font-weight:500;text-decoration:none;border-bottom:1px solid #1A1A2E;padding-bottom:1px;transition:all 0.15s;}
+    .login-link a:hover{color:#8B1A2F;border-color:#8B1A2F;}
+
+    .terms-note{text-align:center;margin-top:14px;font-size:11px;color:#CCC;line-height:1.7;}
+    .terms-note a{color:#AAA;text-decoration:underline;}
+
+    /* 성공 화면 */
+    .success-screen{display:none;text-align:center;padding:40px 0;}
+    .success-icon{font-size:48px;margin-bottom:20px;}
+    .success-title{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:700;color:#1A1A2E;margin-bottom:10px;}
+    .success-desc{font-size:14px;color:#888;line-height:1.8;margin-bottom:32px;}
+    .success-btn{display:inline-block;padding:14px 32px;background:#1A1A2E;color:white;border-radius:8px;text-decoration:none;font-family:'Noto Serif KR',serif;font-size:14px;font-weight:700;transition:opacity 0.2s;}
+    .success-btn:hover{opacity:0.85;}
+
+    @media(max-width:768px){
+      .layout{grid-template-columns:1fr;}
+      .brand-panel{display:none;}
+      .form-panel{padding:40px 24px;}
+      .nav{padding:14px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-back" href="coach.html">← 코칭으로 돌아가기</a>
+  <a class="nav-logo" href="index.html">문제아 問·題·兒</a>
+  <div style="font-size:12px;color:rgba(255,255,255,0.3);">하이애비뉴</div>
+</nav>
+
+<div class="layout">
+
+  <!-- 왼쪽 브랜딩 -->
+  <div class="brand-panel">
+    <span class="brand-tag">하이애비뉴 스페셜 프로그램</span>
+    <div class="brand-title">생각하는 아이가<br><em>합격하는 아이</em>입니다.</div>
+    <div class="brand-desc">
+      특목고·자사고 면접에서 선발되는 학생은<br>
+      답을 아는 아이가 아니라, 논리를 가진 아이입니다.
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>3라운드 코칭 구조</strong> — 첫 답변부터 상위권 답변까지 단계별로 끌어올립니다</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>가치판단형 · 상황판단형 · 자소서형</strong> — 외고·자사고 면접 유형 전체 커버</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>학교별 맞춤 질문</strong> — 명덕외고, 이화외고, 서울국제고, 하나고, 외대부고 질문 팩 수록</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>자소서 기반 예상 질문</strong> — 본인 자소서로 면접관이 파고들 질문 20개 생성</div>
+      </div>
+    </div>
+    <div class="brand-quote">
+      <p>"범용 AI는 정답을 생성하고,<br>하이애비뉴는 학생의 논리 오류를 감지해<br>다음 질문을 생성합니다."</p>
+      <cite>— 하이애비뉴 박정아 원장</cite>
+    </div>
+  </div>
+
+  <!-- 오른쪽 폼 -->
+  <div class="form-panel">
+    <div id="form-content">
+      <div class="form-header">
+        <span class="form-header-tag">Start Coaching</span>
+        <h1>코칭 시작하기</h1>
+        <p>회원가입 후 하이애비뉴 스페셜 코칭을<br>무료로 체험하세요.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">이름</label>
+        <input class="form-input" type="text" placeholder="홍길동" id="name" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">아이디</label>
+        <input class="form-input" type="text" placeholder="영문, 숫자 조합 4자 이상" id="userid" />
+        <div class="form-hint">로그인 시 사용할 아이디를 입력해주세요</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">이메일</label>
+        <input class="form-input" type="email" placeholder="example@email.com" id="email" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">비밀번호</label>
+        <input class="form-input" type="password" placeholder="8자 이상 입력해주세요" id="pw" />
+        <div class="form-hint">영문, 숫자 조합 8자 이상</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">비밀번호 확인</label>
+        <input class="form-input" type="password" placeholder="비밀번호를 한 번 더 입력해주세요" id="pw2" />
+      </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">지원 학교 <span style="color:#8B1A2F;font-weight:600;">필수 · 중복 선택 가능</span></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="form-group">
+        <div class="school-select" id="school-grid">
+          <button class="school-btn" onclick="selSchool(this)">대원외고</button>
+          <button class="school-btn" onclick="selSchool(this)">대일외고</button>
+          <button class="school-btn" onclick="selSchool(this)">명덕외고</button>
+          <button class="school-btn" onclick="selSchool(this)">한영외고</button>
+          <button class="school-btn" onclick="selSchool(this)">이화외고</button>
+          <button class="school-btn" onclick="selSchool(this)">서울국제고</button>
+          <button class="school-btn" onclick="selSchool(this)">하나고</button>
+          <button class="school-btn" onclick="selSchool(this)">외대부고</button>
+          <button class="school-btn" onclick="selSchool(this)">민사고</button>
+          <button class="school-btn" onclick="selSchool(this)">상산고</button>
+          <button class="school-btn" onclick="selSchool(this)">김천고</button>
+          <button class="school-btn" onclick="selSchool(this)">북일고</button>
+          <button class="school-btn" onclick="selSchool(this)">인천하늘고</button>
+          <button class="school-btn" onclick="selSchool(this)">현대청운고</button>
+          <button class="school-btn" onclick="selSchool(this)">포항제철고</button>
+          <button class="school-btn" onclick="selSchool(this)">광양제철고</button>
+          <button class="school-btn" onclick="selSchool(this)">기타(경기권)</button>
+          <button class="school-btn" onclick="selSchool(this)">기타(지방)</button>
+        </div>
+        <div class="form-hint" id="school-hint" style="margin-top:8px;color:#8B1A2F;">지원 학교를 1개 이상 선택해주세요</div>
+      </div>
+
+      <button class="submit-btn" onclick="doSignup()">회원가입하고 코칭 시작하기 →</button>
+
+      <div class="login-link">
+        이미 회원이신가요? <a href="login.html">로그인하기</a>
+      </div>
+
+      <div class="terms-note">
+        가입 시 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의하게 됩니다.
+      </div>
+    </div>
+
+    <!-- 성공 화면 -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">🎯</div>
+      <div class="success-title">가입 완료!</div>
+      <div class="success-desc">
+        하이애비뉴 스페셜 코칭에 오신 것을 환영합니다.<br>
+        이제 코칭을 시작해보세요.
+      </div>
+      <a class="success-btn" href="coach.html">코칭 시작하기 →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 학교 중복 선택 가능
+  function selSchool(btn) {
+    btn.classList.toggle('active');
+    const selected = document.querySelectorAll('.school-btn.active').length;
+    const hint = document.getElementById('school-hint');
+    if (selected > 0) {
+      hint.style.color = '#4CAF7D';
+      hint.textContent = `${selected}개 학교 선택됨`;
+    } else {
+      hint.style.color = '#8B1A2F';
+      hint.textContent = '지원 학교를 1개 이상 선택해주세요';
+    }
+  }
+
+  function doSignup() {
+    const name = document.getElementById('name').value.trim();
+    const userid = document.getElementById('userid').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pw = document.getElementById('pw').value;
+    const pw2 = document.getElementById('pw2').value;
+    const selectedSchools = document.querySelectorAll('.school-btn.active').length;
+
+    if (!name) { alert('이름을 입력해주세요.'); return; }
+    if (!userid || userid.length < 4) { alert('아이디는 4자 이상이어야 합니다.'); return; }
+    if (!email || !email.includes('@')) { alert('올바른 이메일을 입력해주세요.'); return; }
+    if (pw.length < 8) { alert('비밀번호는 8자 이상이어야 합니다.'); return; }
+    if (pw !== pw2) { alert('비밀번호가 일치하지 않습니다.'); return; }
+    if (selectedSchools === 0) { alert('지원 학교를 1개 이상 선택해주세요.'); return; }
+
+    // 실제 DB 연동 전 UI 데모
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+  }
+</script>
+</body>
+</html>
