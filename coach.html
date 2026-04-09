@@ -16,7 +16,7 @@
     .nav-logo{font-family:'Noto Serif KR',serif;color:white;font-size:15px;font-weight:700;text-decoration:none;}
 
     /* 질문 선택 화면 */
-    #screen-select{padding:48px 40px;}
+    #screen-select{padding:48px 40px;display:none;}
     .screen-tag{font-size:10px;letter-spacing:3px;color:#8B1A2F;text-transform:uppercase;margin-bottom:12px;display:block;text-align:center;}
     .screen-title{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:700;color:#1A1A2E;text-align:center;margin-bottom:8px;}
     .screen-sub{font-size:13px;color:#999;text-align:center;margin-bottom:40px;line-height:1.7;}
@@ -94,6 +94,18 @@
     .typing span:nth-child(3){animation-delay:0.3s;}
     @keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
 
+    /* 로그인 화면 */
+    #screen-login{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 52px);padding:20px;}
+    .login-card{background:white;border-radius:14px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+    .login-logo{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;color:#1A1A2E;text-align:center;margin-bottom:6px;}
+    .login-sub{font-size:13px;color:#999;text-align:center;margin-bottom:32px;}
+    .login-label{font-size:12px;color:#555;margin-bottom:6px;display:block;font-weight:500;}
+    .login-input{width:100%;border:1.5px solid #E0DDD8;border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:#1A1A2E;margin-bottom:14px;transition:border-color 0.2s;box-sizing:border-box;}
+    .login-input:focus{outline:none;border-color:#1A1A2E;}
+    .login-btn{width:100%;padding:14px;background:#1A1A2E;color:white;border:none;border-radius:8px;font-size:14px;font-family:'Noto Serif KR',serif;cursor:pointer;transition:opacity 0.2s;margin-top:6px;}
+    .login-btn:hover{opacity:0.85;}
+    .login-error{font-size:12px;color:#8B1A2F;text-align:center;margin-top:10px;display:none;}
+
     @media(max-width:600px){
       #screen-select{padding:32px 20px;}
       .q-grid{grid-template-columns:1fr;}
@@ -109,6 +121,20 @@
   <a class="nav-logo" href="index.html">문제아 問·題·兒</a>
   <div style="font-size:12px;color:rgba(255,255,255,0.35);">AI 코칭 데모</div>
 </nav>
+
+<!-- 로그인 화면 -->
+<div id="screen-login">
+  <div class="login-card">
+    <div class="login-logo">문제아 問·題·兒</div>
+    <div class="login-sub">하이애비뉴 논구술 AI 코칭</div>
+    <label class="login-label">아이디</label>
+    <input class="login-input" type="text" id="login-id" placeholder="아이디를 입력하세요" />
+    <label class="login-label">비밀번호</label>
+    <input class="login-input" type="password" id="login-pw" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-error" id="login-error">아이디 또는 비밀번호가 올바르지 않습니다</div>
+  </div>
+</div>
 
 <!-- 질문 선택 화면 -->
 <div id="screen-select">
@@ -263,6 +289,22 @@
 </div>
 
 <script>
+// 로그인 계정 (아이디: 비밀번호)
+const ACCOUNTS = {
+  'ashley': 'highavenue2024',
+};
+
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value.trim();
+  if (ACCOUNTS[id] && ACCOUNTS[id] === pw) {
+    document.getElementById('screen-login').style.display = 'none';
+    document.getElementById('screen-select').style.display = 'block';
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
 let currentQ = {};
 let round = 0;
 let answers = [];
@@ -451,17 +493,16 @@ AI 코칭 질문 2: "${aiResponses[1] || ''}"
 }
 
 async function callClaude(prompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const GEMINI_KEY = 'AIzaSyAzAp0Wdg_HXQeVjgQyr7tBGQeJnW_J5uk';
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [{ role: 'user', content: prompt }]
+      contents: [{ parts: [{ text: prompt }] }]
     })
   });
   const data = await res.json();
-  return data.content[0].text;
+  return data.candidates[0].content.parts[0].text;
 }
 
 function restartCoach() {
