@@ -410,6 +410,41 @@
   </div>
 </div>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC-hbGx1qjuVrkDft39wDHvDgTDAC55clg",
+  authDomain: "munjea.firebaseapp.com",
+  projectId: "munjea",
+  storageBucket: "munjea.firebasestorage.app",
+  messagingSenderId: "334629459791",
+  appId: "1:334629459791:web:9440d98367b08624ad173a"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// 로그인 상태 확인
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.isLoggedIn = true;
+    // 네비에 사용자 이름 표시
+    const navRight = document.querySelector('.nav > div:last-child');
+    if (navRight) navRight.textContent = user.displayName || user.email;
+  } else {
+    window.isLoggedIn = false;
+  }
+});
+
+// 로그아웃
+window.doSignOut = async function() {
+  await signOut(auth);
+  window.location.href = 'login.html';
+};
+</script>
+
 <script>
 // 로그인 계정
 const ACCOUNTS = { 'ashley': 'highavenue2024' };

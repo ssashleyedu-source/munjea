@@ -224,9 +224,24 @@
 
 </div>
 
-<script>
-  // 학교 중복 선택 가능
-  function selSchool(btn) {
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-hbGx1qjuVrkDft39wDHvDgTDAC55clg",
+    authDomain: "munjea.firebaseapp.com",
+    projectId: "munjea",
+    storageBucket: "munjea.firebasestorage.app",
+    messagingSenderId: "334629459791",
+    appId: "1:334629459791:web:9440d98367b08624ad173a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 학교 중복 선택
+  window.selSchool = function(btn) {
     btn.classList.toggle('active');
     const selected = document.querySelectorAll('.school-btn.active').length;
     const hint = document.getElementById('school-hint');
@@ -237,9 +252,9 @@
       hint.style.color = '#8B1A2F';
       hint.textContent = '지원 학교를 1개 이상 선택해주세요';
     }
-  }
+  };
 
-  function doSignup() {
+  window.doSignup = async function() {
     const name = document.getElementById('name').value.trim();
     const userid = document.getElementById('userid').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -254,10 +269,28 @@
     if (pw !== pw2) { alert('비밀번호가 일치하지 않습니다.'); return; }
     if (selectedSchools === 0) { alert('지원 학교를 1개 이상 선택해주세요.'); return; }
 
-    // 실제 DB 연동 전 UI 데모
-    document.getElementById('form-content').style.display = 'none';
-    document.getElementById('success-screen').style.display = 'block';
-  }
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.textContent = '가입 중...';
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
+      await updateProfile(userCredential.user, { displayName: name });
+      // 성공
+      document.getElementById('form-content').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = '회원가입하고 코칭 시작하기 →';
+      if (e.code === 'auth/email-already-in-use') {
+        alert('이미 사용 중인 이메일이에요. 로그인해주세요.');
+      } else if (e.code === 'auth/weak-password') {
+        alert('비밀번호가 너무 약해요. 8자 이상으로 입력해주세요.');
+      } else {
+        alert('오류가 발생했어요: ' + e.message);
+      }
+    }
+  };
 </script>
 </body>
 </html>
