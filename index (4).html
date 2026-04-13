@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문제아 問·題·兒 | 사고 과정을 검증하는 AI 학습 플랫폼</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans KR', sans-serif; }
+
+    /* NAV */
+    .nav {
+      background: #1A1A2E;
+      padding: 16px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Noto Serif KR', serif;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: rgba(255,255,255,0.4); font-size: 12px; margin-left: 8px; font-family: 'Noto Sans KR', sans-serif; font-weight: 400; }
+    .nav-contact { color: rgba(255,255,255,0.45); font-size: 12px; }
+
+    .nav-btns{display:flex;gap:8px;align-items:center;}
+    .nav-btn{padding:7px 16px;border-radius:4px;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s;font-family:'Noto Sans KR',sans-serif;}
+    .nav-btn-login{color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);}
+    .nav-btn-login:hover{color:white;border-color:rgba(255,255,255,0.5);}
+    .nav-btn-signup{background:white;color:#1A1A2E;}
+    .nav-btn-signup:hover{background:#E8A0AA;color:#1A1A2E;}
+    .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 520px; }
+    .hero-left {
+      background: #1A1A2E;
+      padding: 72px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right {
+      background: #8B1A2F;
+      padding: 72px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-tag {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.5;
+      color: white;
+    }
+    .hero-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 34px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .hero-desc {
+      font-size: 14px;
+      line-height: 1.85;
+      margin-bottom: 36px;
+      color: rgba(255,255,255,0.6);
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      width: fit-content;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-white-navy { background: white; color: #1A1A2E; }
+    .btn-white-burg { background: white; color: #8B1A2F; }
+
+    /* WHY 섹션 */
+    .section { padding: 88px 48px; background: white; }
+    .section-center { text-align: center; max-width: 680px; margin: 0 auto; }
+    .section-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #8B1A2F; margin-bottom: 16px; }
+    .section-title { font-family: 'Noto Serif KR', serif; font-size: 28px; font-weight: 700; color: #1A1A2E; line-height: 1.55; margin-bottom: 20px; }
+    .section-desc { font-size: 15px; color: #777; line-height: 1.9; }
+
+    /* 파일럿 데이터 */
+    .data-section { background: #F7F5F2; padding: 72px 48px; }
+    .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 860px; margin: 48px auto 0; }
+    .data-card { background: white; border-radius: 10px; padding: 28px 24px; text-align: center; }
+    .data-num { font-family: 'Noto Serif KR', serif; font-size: 40px; font-weight: 700; color: #8B1A2F; margin-bottom: 8px; }
+    .data-label { font-size: 13px; color: #888; line-height: 1.6; }
+
+    /* 후기 */
+    .review-section { padding: 72px 48px; background: white; }
+    .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 780px; margin: 48px auto 0; }
+    .review-card { background: #F7F5F2; border-radius: 8px; padding: 20px 22px; border-left: 3px solid #1A1A2E; }
+    .review-card.burg { border-left-color: #8B1A2F; }
+    .review-text { font-size: 14px; color: #333; line-height: 1.75; margin-bottom: 10px; font-style: italic; }
+    .review-who { font-size: 12px; color: #999; }
+
+    /* CTA */
+    .cta { background: #1A1A2E; padding: 88px 48px; text-align: center; }
+    .cta-title { font-family: 'Noto Serif KR', serif; font-size: 30px; font-weight: 700; color: white; line-height: 1.5; margin-bottom: 14px; }
+    .cta-desc { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-burg { background: #8B1A2F; color: white; }
+    .cta-contact { margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.35); }
+    .cta-contact span { color: rgba(255,255,255,0.6); }
+
+    /* FOOTER */
+    .footer { background: #0F0F1E; padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-logo { font-family: 'Noto Serif KR', serif; color: white; font-size: 14px; }
+    .footer-info { color: rgba(255,255,255,0.3); font-size: 12px; }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .nav { padding: 14px 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left, .hero-right { padding: 52px 28px; }
+      .hero-title { font-size: 26px; }
+      .section { padding: 56px 24px; }
+      .data-section { padding: 56px 24px; }
+      .data-grid { grid-template-columns: 1fr; }
+      .review-section { padding: 56px 24px; }
+      .review-grid { grid-template-columns: 1fr; }
+      .cta { padding: 56px 24px; }
+      .footer { flex-direction: column; text-align: center; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="nav-logo" href="index.html">문제아 問·題·兒 <span>by 하이애비뉴</span></a>
+    <div class="nav-btns">
+      <a class="nav-btn nav-btn-login" href="login.html">로그인</a>
+      <a class="nav-btn nav-btn-signup" href="signup.html">회원가입</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">English Track</div>
+      <div class="hero-title">영어 독해,<br>답만 맞히면<br>충분할까요?</div>
+      <div class="hero-desc">
+        AI가 근거를 묻고, 학생이 직접 설명합니다.<br>
+        특목고 영어 독해 사고력 훈련
+      </div>
+      <a class="btn btn-white-navy" href="https://forms.gle/여기에구글폼링크" target="_blank">영어 파일럿 신청하기 →</a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-tag">논구술 Track</div>
+      <div class="hero-title">면접관은<br>'생각하는 아이'를<br>찾습니다.</div>
+      <div class="hero-desc">
+        하이애비뉴 코칭으로 답변을 끌어올립니다.<br>
+        자사고·외고 논구술 면접 대비
+      </div>
+      <a class="btn btn-white-burg" href="interview.html">논구술 트랙 시작하기 →</a>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="section">
+    <div class="section-center">
+      <div class="section-tag">Why 문제아</div>
+      <div class="section-title">
+        답을 잘 쓰는 아이보다,<br>
+        생각을 끝까지 말할 수 있는 아이가<br>
+        결국 선발됩니다.
+      </div>
+      <div class="section-desc">
+        문제아(問·題·兒)는 학생의 사고 과정을 검증하는 AI 학습 플랫폼입니다.<br>
+        정답을 알려주는 대신, AI가 질문으로 논리 오류를 감지하고 다음 단계를 안내합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 데이터 -->
+  <section class="data-section">
+    <div class="section-center">
+      <div class="section-tag">Pilot Results</div>
+      <div class="section-title">1월 파일럿 10명, 3주 결과</div>
+    </div>
+    <div class="data-grid">
+      <div class="data-card">
+        <div class="data-num">+21.4점</div>
+        <div class="data-label">평균 사고력 점수 향상<br>(3주 만에 하위권 → 중상위권)</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">52%</div>
+        <div class="data-label">AI 질문 받은 후<br>스스로 답변 수정한 학생 비율</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">73%</div>
+        <div class="data-label">Level 2 진급 가능<br>3주 후 기준</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 후기 -->
+  <section class="review-section">
+    <div class="section-center">
+      <div class="section-tag">Student Voice</div>
+      <div class="section-title">학생들이 직접 한 말</div>
+    </div>
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="review-text">"AI가 왜 그렇게 생각했냐고 물어봐서 처음엔 당황했어요. 근데 설명하다 보니 제가 뭘 모르는지 알게 됐어요."</div>
+        <div class="review-who">— 중2 박○○</div>
+      </div>
+      <div class="review-card burg">
+        <div class="review-text">"정답을 알려주지 않는데 오히려 더 기억에 남아요. 스스로 찾으니까요."</div>
+        <div class="review-who">— 중1 이○○</div>
+      </div>
+      <div class="review-card burg">
+        <div class="review-text">"처음엔 왜 정답을 안 알려주나 불만이었는데, 3주 지나니까 혼자서도 근거를 찾게 됐어요."</div>
+        <div class="review-who">— 중3 김○○</div>
+      </div>
+      <div class="review-card">
+        <div class="review-text">"설명하는 연습을 하다 보니 영어 지문 읽는 방법 자체가 바뀐 것 같아요."</div>
+        <div class="review-who">— 중2 최○○</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-title">6월 파일럿 프로그램<br>지금 신청하세요</div>
+    <div class="cta-desc">서울 메트로 지역 학원 대상 · 영어 / 논구술 선택 가능</div>
+    <div class="cta-btns">
+      <a class="btn btn-white-navy" href="english.html">영어 트랙 시작하기 →</a>
+      <a class="btn btn-burg" href="interview.html">논구술 트랙 시작하기 →</a>
+      <a class="btn" href="signup.html" style="background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:white;">무료 회원가입 →</a>
+    </div>
+    <div class="cta-contact">하이애비뉴 · <span>010-2575-6941</span></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">문제아 問·題·兒</div>
+    <div class="footer-info">하이애비뉴 · 박정아 원장 · 010-2575-6941</div>
+    <div class="footer-info">© 2026 하이애비뉴</div>
+  </footer>
+
+</body>
+</html>
