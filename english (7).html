@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>영어 트랙 | 문제아 問·題·兒</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #1B3A2D;
+      --emerald: #2D6A4F;
+      --sage: #52B788;
+      --mint: #B7E4C7;
+      --cream: #F4F1EC;
+      --warm: #FAF8F4;
+      --gold: #D4A853;
+      --text: #1A2E1F;
+      --muted: #6B8F71;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans KR',sans-serif;background:var(--warm);color:var(--text);}
+
+    /* NAV */
+    .nav{background:var(--forest);padding:14px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+    .nav-back{color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;transition:color 0.2s;}
+    .nav-back:hover{color:white;}
+    .nav-logo{font-family:'Noto Serif KR',serif;color:white;font-size:16px;font-weight:700;text-decoration:none;}
+    .nav-contact{color:rgba(255,255,255,0.4);font-size:12px;}
+
+    /* ── HERO ── */
+    .hero{min-height:100vh;background:var(--forest);display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(82,183,136,0.12) 0%,transparent 60%);pointer-events:none;}
+
+    .hero-left{padding:100px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;}
+    .hero-tag{font-size:11px;letter-spacing:4px;color:var(--sage);text-transform:uppercase;margin-bottom:20px;display:block;opacity:0;animation:fadeUp 0.7s 0.2s forwards;}
+    .hero-title{font-family:'Noto Serif KR',serif;font-size:44px;font-weight:700;color:white;line-height:1.42;margin-bottom:22px;opacity:0;animation:fadeUp 0.7s 0.4s forwards;}
+    .hero-title em{color:var(--mint);font-style:normal;}
+    .hero-desc{font-size:15px;color:rgba(255,255,255,0.58);line-height:1.9;margin-bottom:44px;opacity:0;animation:fadeUp 0.7s 0.6s forwards;}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 0.8s forwards;}
+    .btn-sage{display:inline-block;padding:15px 30px;background:var(--sage);color:white;border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;font-family:'Noto Serif KR',serif;}
+    .btn-sage:hover{background:var(--mint);color:var(--forest);transform:translateY(-2px);}
+    .btn-ghost{display:inline-block;padding:15px 30px;border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.8);border-radius:6px;font-size:14px;font-weight:500;text-decoration:none;transition:all 0.2s;}
+    .btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+
+    /* 오른쪽 일러스트 */
+    .hero-right{display:flex;align-items:center;justify-content:center;padding:60px 40px;position:relative;z-index:1;}
+    .hero-illust{width:100%;max-width:420px;position:relative;}
+    .illust-student{width:100%;border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(82,183,136,0.2);padding:32px;text-align:center;}
+    .student-emoji{font-size:120px;line-height:1;margin-bottom:16px;display:block;animation:float 3s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .student-caption{font-family:'Noto Serif KR',serif;font-size:18px;color:var(--mint);margin-bottom:8px;}
+    .student-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;}
+
+    .floating-badge{position:absolute;background:white;border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);animation:badgeFloat 4s ease-in-out infinite;}
+    .floating-badge:nth-child(2){top:10%;right:-20px;animation-delay:0s;}
+    .floating-badge:nth-child(3){bottom:15%;left:-20px;animation-delay:1.5s;}
+    @keyframes badgeFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+    .badge-label{font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;}
+    .badge-val{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--forest);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ── WHY 섹션 ── */
+    .why-section{padding:100px 48px;background:white;}
+    .sec-tag{font-size:10px;letter-spacing:3px;color:var(--emerald);text-transform:uppercase;margin-bottom:14px;text-align:center;display:block;}
+    .sec-title{font-family:'Noto Serif KR',serif;font-size:30px;font-weight:700;color:var(--text);line-height:1.5;text-align:center;margin-bottom:14px;}
+    .sec-desc{font-size:14px;color:#888;line-height:1.9;text-align:center;max-width:600px;margin:0 auto 56px;}
+
+    .why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:860px;margin:0 auto;}
+    .why-card{background:var(--warm);border-radius:14px;padding:28px;border-left:4px solid var(--sage);transition:transform 0.2s;}
+    .why-card:hover{transform:translateY(-3px);}
+    .why-icon{font-size:28px;margin-bottom:14px;}
+    .why-card h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+    .why-card p{font-size:13px;color:#888;line-height:1.78;}
+
+    /* ── 4단계 다이어그램 ── */
+    .diagram-section{padding:100px 48px;background:var(--forest);position:relative;overflow:hidden;}
+    .diagram-section::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(82,183,136,0.08) 0%,transparent 70%);pointer-events:none;}
+    .diagram-section .sec-tag{color:var(--sage);}
+    .diagram-section .sec-title{color:white;}
+    .diagram-section .sec-desc{color:rgba(255,255,255,0.5);}
+
+    .diagram-wrap{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:0;justify-content:center;}
+    .diagram-step{flex:1;text-align:center;position:relative;}
+    .diagram-step::after{content:'→';position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--sage);font-size:20px;z-index:1;}
+    .diagram-step:last-child::after{display:none;}
+    .step-circle{width:80px;height:80px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif KR',serif;font-size:13px;font-weight:700;border:2px solid rgba(82,183,136,0.3);color:white;transition:all 0.3s;cursor:pointer;}
+    .step-circle:hover{border-color:var(--sage);background:rgba(82,183,136,0.1);transform:scale(1.1);}
+    .step-circle.active{background:var(--sage);border-color:var(--sage);color:var(--forest);}
+    .step-num{font-size:10px;color:var(--sage);letter-spacing:2px;margin-bottom:4px;}
+    .step-name{font-family:'Noto Serif KR',serif;font-size:15px;color:white;margin-bottom:4px;}
+    .step-en{font-size:11px;color:rgba(255,255,255,0.35);}
+
+    /* ── 4단계 슬라이더 (풀스크린) ── */
+    .stage-section{overflow:hidden;}
+    .stage-slide{min-height:85vh;display:none;padding:80px 64px;align-items:center;justify-content:center;transition:background 0.5s;}
+    .stage-slide.active{display:flex;}
+    .stage-inner{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+
+    /* 레벨별 배경 */
+    #slide-0{background:var(--forest);}
+    #slide-1{background:#0D1B2A;}
+    #slide-2{background:#1C1500;}
+    #slide-3{background:#1A0A1A;}
+
+    /* 왼쪽 - 레벨별 색상 */
+    .sl-left{}
+    .sl-level{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:20px;margin-bottom:20px;}
+    .sl-level-0{background:rgba(82,183,136,0.15);border:1px solid rgba(82,183,136,0.3);}
+    .sl-level-1{background:rgba(100,160,230,0.12);border:1px solid rgba(100,160,230,0.25);}
+    .sl-level-2{background:rgba(230,180,50,0.12);border:1px solid rgba(230,180,50,0.25);}
+    .sl-level-3{background:rgba(200,100,160,0.12);border:1px solid rgba(200,100,160,0.25);}
+    .sl-lv-num{font-size:11px;letter-spacing:2px;font-weight:700;}
+    .sl-lv-name{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;}
+    .sl-lv-0 .sl-lv-num{color:var(--sage);} .sl-lv-0 .sl-lv-name{color:var(--mint);}
+    .sl-lv-1 .sl-lv-num{color:#64A0E6;} .sl-lv-1 .sl-lv-name{color:#A8CFFF;}
+    .sl-lv-2 .sl-lv-num{color:#E6B432;} .sl-lv-2 .sl-lv-name{color:#FFD97A;}
+    .sl-lv-3 .sl-lv-num{color:#C864A0;} .sl-lv-3 .sl-lv-name{color:#F0A0D0;}
+    .sl-title{font-family:'Noto Serif KR',serif;font-size:34px;font-weight:700;color:white;line-height:1.45;margin-bottom:16px;}
+    .sl-desc{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.9;margin-bottom:24px;}
+    .sl-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+
+    /* 레벨별 태그 색상 */
+    #slide-0 .sl-tag{background:rgba(82,183,136,0.1);color:var(--sage);border:1px solid rgba(82,183,136,0.2);}
+    #slide-1 .sl-tag{background:rgba(100,160,230,0.1);color:#64A0E6;border:1px solid rgba(100,160,230,0.2);}
+    #slide-2 .sl-tag{background:rgba(230,180,50,0.1);color:#E6B432;border:1px solid rgba(230,180,50,0.2);}
+    #slide-3 .sl-tag{background:rgba(200,100,160,0.1);color:#C864A0;border:1px solid rgba(200,100,160,0.2);}
+
+    /* 레벨별 goal 박스 */
+    #slide-0 .sl-goal{background:rgba(255,255,255,0.04);border-left:4px solid var(--sage);}
+    #slide-0 .sl-goal-label{color:var(--sage);}
+    #slide-1 .sl-goal{background:rgba(255,255,255,0.04);border-left:4px solid #64A0E6;}
+    #slide-1 .sl-goal-label{color:#64A0E6;}
+    #slide-2 .sl-goal{background:rgba(255,255,255,0.04);border-left:4px solid #E6B432;}
+    #slide-2 .sl-goal-label{color:#E6B432;}
+    #slide-3 .sl-goal{background:rgba(255,255,255,0.04);border-left:4px solid #C864A0;}
+    #slide-3 .sl-goal-label{color:#C864A0;}
+    .sl-goal{border-radius:12px;padding:18px 20px;}
+    .sl-goal-label{font-size:10px;letter-spacing:2px;margin-bottom:6px;font-weight:700;}
+    .sl-goal-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;}
+
+    /* 오른쪽 대화 - 다크 스타일 */
+    .sl-right{display:flex;flex-direction:column;gap:10px;}
+    .chat-box{border-radius:12px;padding:16px 18px;}
+    .chat-box .chat-label{font-size:10px;letter-spacing:1px;margin-bottom:7px;font-weight:700;}
+    .chat-box .chat-text{font-size:13px;line-height:1.78;}
+    .chat-q{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);}
+    .chat-q .chat-label{color:rgba(255,255,255,0.4);}
+    .chat-q .chat-text{color:rgba(255,255,255,0.85);}
+    .chat-student{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);}
+    .chat-student .chat-label{color:rgba(255,255,255,0.35);}
+    .chat-student .chat-text{color:rgba(255,255,255,0.7);}
+    #slide-0 .chat-ha{background:rgba(82,183,136,0.12);border:1px solid rgba(82,183,136,0.25);}
+    #slide-0 .chat-ha .chat-label{color:var(--sage);}
+    #slide-1 .chat-ha{background:rgba(100,160,230,0.1);border:1px solid rgba(100,160,230,0.2);}
+    #slide-1 .chat-ha .chat-label{color:#64A0E6;}
+    #slide-2 .chat-ha{background:rgba(230,180,50,0.1);border:1px solid rgba(230,180,50,0.2);}
+    #slide-2 .chat-ha .chat-label{color:#E6B432;}
+    #slide-3 .chat-ha{background:rgba(200,100,160,0.1);border:1px solid rgba(200,100,160,0.2);}
+    #slide-3 .chat-ha .chat-label{color:#C864A0;}
+    .chat-ha .chat-text{color:rgba(255,255,255,0.85);}
+    #slide-0 .chat-result{background:rgba(82,183,136,0.08);border:1px dashed rgba(82,183,136,0.3);border-radius:10px;padding:12px 16px;}
+    #slide-0 .chat-result .rl{color:var(--sage);}
+    #slide-1 .chat-result{background:rgba(100,160,230,0.08);border:1px dashed rgba(100,160,230,0.3);border-radius:10px;padding:12px 16px;}
+    #slide-1 .chat-result .rl{color:#64A0E6;}
+    #slide-2 .chat-result{background:rgba(230,180,50,0.08);border:1px dashed rgba(230,180,50,0.3);border-radius:10px;padding:12px 16px;}
+    #slide-2 .chat-result .rl{color:#E6B432;}
+    #slide-3 .chat-result{background:rgba(200,100,160,0.08);border:1px dashed rgba(200,100,160,0.3);border-radius:10px;padding:12px 16px;}
+    #slide-3 .chat-result .rl{color:#C864A0;}
+    .chat-result .rl{font-size:10px;letter-spacing:1px;margin-bottom:5px;font-weight:700;}
+    .chat-result .rt{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.7;}
+
+    /* 슬라이더 컨트롤 */
+    .stage-controls{padding:20px 48px;display:flex;justify-content:center;align-items:center;gap:16px;transition:background 0.5s;}
+    .sc-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;text-decoration:none;}
+    .sc-btn:hover{background:rgba(255,255,255,0.2);}
+    .sc-dots{display:flex;gap:8px;}
+    .sc-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s;}
+    .sc-dot.active{transform:scale(1.3);}
+    .sc-label{font-size:13px;color:rgba(255,255,255,0.5);min-width:40px;text-align:center;}
+
+    /* ── 파일럿 데이터 ── */
+    .data-section{padding:100px 48px;background:white;}
+    .data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:860px;margin:0 auto;}
+    .data-card{background:var(--warm);border-radius:14px;padding:32px;text-align:center;border-bottom:3px solid var(--sage);}
+    .data-num{font-family:'Noto Serif KR',serif;font-size:44px;font-weight:700;color:var(--emerald);margin-bottom:6px;}
+    .data-label{font-size:13px;color:#888;line-height:1.65;}
+
+    /* ── 코칭 예시 ── */
+    .process-section{padding:100px 48px;background:var(--cream);}
+    .process-wrap{max-width:720px;margin:0 auto;}
+    .p-qbox{background:var(--forest);color:white;border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:16px;}
+    .p-ql{font-size:10px;color:var(--sage);letter-spacing:2px;margin-bottom:8px;}
+    .p-qt{font-size:14px;line-height:1.65;color:white;}
+    .p-row{display:flex;margin-bottom:10px;align-items:flex-start;}
+    .p-row.right{justify-content:flex-end;}
+    .ha-av{width:30px;height:30px;background:var(--emerald);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:700;margin-right:8px;flex-shrink:0;margin-top:2px;letter-spacing:-0.5px;}
+    .p-bubble{max-width:80%;padding:13px 16px;font-size:13px;line-height:1.75;border-radius:10px;}
+    .p-low{background:#FFF3E0;color:#555;border-radius:10px 10px 10px 2px;border-left:3px solid #FFB74D;}
+    .p-low .bl{font-size:10px;color:#F57C00;letter-spacing:1px;margin-bottom:5px;}
+    .p-ha{background:white;color:#444;border-radius:10px 10px 10px 2px;border:1px solid #E0E0E0;}
+    .p-ha .bl{font-size:10px;color:var(--emerald);letter-spacing:1px;margin-bottom:5px;}
+    .p-student{background:var(--forest);color:white;border-radius:10px 10px 2px 10px;}
+    .p-student .bl{font-size:10px;color:var(--sage);letter-spacing:1px;margin-bottom:5px;}
+    .p-quote{text-align:center;margin-top:24px;background:white;border-radius:10px;padding:18px;font-size:14px;color:var(--emerald);font-style:italic;border-left:3px solid var(--sage);}
+
+    /* ── CTA ── */
+    .cta{background:linear-gradient(135deg,var(--forest) 0%,var(--emerald) 100%);padding:100px 48px;text-align:center;position:relative;overflow:hidden;}
+    .cta::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(82,183,136,0.15) 0%,transparent 70%);}
+    .cta-title{font-family:'Noto Serif KR',serif;font-size:32px;font-weight:700;color:white;line-height:1.5;margin-bottom:12px;position:relative;}
+    .cta-desc{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:40px;line-height:1.8;position:relative;}
+    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;}
+    .btn-white{display:inline-block;padding:15px 32px;background:white;color:var(--forest);border-radius:6px;font-size:14px;font-weight:700;text-decoration:none;font-family:'Noto Serif KR',serif;transition:all 0.2s;}
+    .btn-white:hover{background:var(--mint);transform:translateY(-2px);}
+    .btn-outline2{display:inline-block;padding:15px 32px;border:1.5px solid rgba(255,255,255,0.3);color:white;border-radius:6px;font-size:14px;font-weight:500;text-decoration:none;transition:all 0.2s;}
+    .btn-outline2:hover{border-color:var(--mint);color:var(--mint);}
+    .cta-contact{margin-top:24px;font-size:13px;color:rgba(255,255,255,0.3);position:relative;}
+    .cta-contact span{color:rgba(255,255,255,0.55);}
+
+    /* FOOTER */
+    .footer{background:#0F1F14;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-logo{font-family:'Noto Serif KR',serif;color:white;font-size:13px;}
+    .footer-info{color:rgba(255,255,255,0.3);font-size:12px;}
+
+    @media(max-width:768px){
+      .nav,.why-section,.diagram-section,.data-section,.process-section,.cta,.footer{padding-left:20px;padding-right:20px;}
+      .hero{grid-template-columns:1fr;}
+      .hero-right{display:none;}
+      .hero-left{padding:80px 24px;}
+      .hero-title{font-size:30px;}
+      .why-grid{grid-template-columns:1fr;}
+      .diagram-wrap{flex-direction:column;gap:20px;}
+      .diagram-step::after{display:none;}
+      .stage-slide{padding:40px 20px;}
+      .stage-inner{grid-template-columns:1fr;}
+      .data-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-back" href="index.html">← 홈으로</a>
+  <a class="nav-logo" href="index.html">문제아 問·題·兒</a>
+  <div class="nav-contact">010-2575-6941</div>
+</nav>
+
+<!-- 히어로 -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">하이애비뉴 애슐리박 선생님 특별 제작</span>
+    <div class="hero-title">영어 독해,<br>답만 맞히면<br><em>충분할까요?</em></div>
+    <div class="hero-desc">
+      정답을 찾는 법은 알지만, 왜 그 답인지 설명하지 못하는 학생.<br>
+      문제아는 사고 과정을 0단계부터 3단계까지 끌어올립니다.
+    </div>
+    <div class="hero-btns">
+      <a class="btn-sage" href="#stages">4단계 구조 보기 ↓</a>
+      <a class="btn-ghost" href="#">6월 파일럿 신청</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-illust">
+      <div style="text-align:center;padding:40px 20px;">
+        <div style="font-family:'Noto Serif KR',serif;font-size:88px;font-weight:700;color:white;line-height:1.1;letter-spacing:8px;opacity:0;animation:fadeUp 0.7s 1s forwards;">問</div>
+        <div style="width:2px;height:40px;background:rgba(82,183,136,0.4);margin:8px auto;"></div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:88px;font-weight:700;color:white;line-height:1.1;letter-spacing:8px;opacity:0;animation:fadeUp 0.7s 1.2s forwards;">題</div>
+        <div style="width:2px;height:40px;background:rgba(82,183,136,0.4);margin:8px auto;"></div>
+        <div style="font-family:'Noto Serif KR',serif;font-size:88px;font-weight:700;color:var(--mint);line-height:1.1;letter-spacing:8px;opacity:0;animation:fadeUp 0.7s 1.4s forwards;">兒</div>
+        <div style="margin-top:28px;font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:3px;opacity:0;animation:fadeUp 0.7s 1.6s forwards;">문 · 제 · 아</div>
+      </div>
+      <div class="floating-badge">
+        <div class="badge-label">3주 후 향상</div>
+        <div class="badge-val">+21.4점</div>
+      </div>
+      <div class="floating-badge">
+        <div class="badge-label">자기수정 비율</div>
+        <div class="badge-val">52%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY 섹션 -->
+<section class="why-section">
+  <span class="sec-tag">왜 필요한가</span>
+  <div class="sec-title">이 훈련이 필요한 이유</div>
+  <div class="sec-desc">정답률이 높아도 특목고 면접과 서술형에서 무너지는 데는 이유가 있습니다.</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">🔍</div>
+      <h3>정답은 알지만 설명 못함</h3>
+      <p>왜 그 답인지 근거를 말하지 못하면 면접과 서술형 평가에서 바로 무너집니다. 특목고는 '정답자'가 아닌 '사고자'를 선발합니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💭</div>
+      <h3>논리 없이 느낌으로 풀기</h3>
+      <p>감각적으로 맞히는 습관은 고난도 문제 앞에서 반드시 한계를 드러냅니다. 논리 없는 정답은 운입니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🔀</div>
+      <h3>변형 문제에 대응 못함</h3>
+      <p>조건이 달라지면 처음부터 막히는 학생은 개념을 외운 것이지 이해한 것이 아닙니다.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">✍️</div>
+      <h3>스스로 문제를 못 만듦</h3>
+      <p>개념을 완전히 이해한 학생만이 새로운 문제를 설계할 수 있습니다. 이것이 최고 수준의 이해입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4단계 다이어그램 -->
+<section class="diagram-section" id="stages">
+  <span class="sec-tag">4-Stage System</span>
+  <div class="sec-title">문제아 4단계 인지 구조</div>
+  <div class="sec-desc">각 단계는 이전 단계를 완전히 이해해야 올라갈 수 있습니다. 아래 단계를 클릭해보세요.</div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-step" onclick="goStage(0)">
+      <div class="step-num">LEVEL 0</div>
+      <div class="step-circle active" id="dc-0">복기왕</div>
+      <div class="step-name">복기왕</div>
+      <div class="step-en">Recall</div>
+    </div>
+    <div class="diagram-step" onclick="goStage(1)">
+      <div class="step-num">LEVEL 1</div>
+      <div class="step-circle" id="dc-1">설명왕</div>
+      <div class="step-name">설명왕</div>
+      <div class="step-en">Explain</div>
+    </div>
+    <div class="diagram-step" onclick="goStage(2)">
+      <div class="step-num">LEVEL 2</div>
+      <div class="step-circle" id="dc-2">변형러</div>
+      <div class="step-name">변형러</div>
+      <div class="step-en">Transform</div>
+    </div>
+    <div class="diagram-step" onclick="goStage(3)">
+      <div class="step-num">LEVEL 3</div>
+      <div class="step-circle" id="dc-3">문제아</div>
+      <div class="step-name">문제아</div>
+      <div class="step-en">Create</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4단계 슬라이더 (풀스크린) -->
+<section class="stage-section">
+
+  <!-- LEVEL 0 -->
+  <div class="stage-slide active" id="slide-0">
+    <div class="stage-inner">
+      <div class="sl-left">
+        <div class="sl-level sl-level-0">
+          <span class="sl-lv-num sl-lv-0">LEVEL 0</span>
+          <span class="sl-lv-name sl-lv-0">복기왕</span>
+        </div>
+        <div class="sl-title">방금 푼 문제,<br>다시 설명할 수 있나요?</div>
+        <div class="sl-desc">정답을 맞혔어도 풀이 과정을 스스로 재현하지 못하면 진짜 이해가 아닙니다. 복기왕은 방금 푼 내용을 자신의 언어로 다시 말하는 단계입니다.</div>
+        <div class="sl-tags">
+          <span class="sl-tag">📷 OCR 시험지 스캔</span>
+          <span class="sl-tag">오답 자동 감지</span>
+          <span class="sl-tag">풀이 재현</span>
+          <span class="sl-tag">핵심 어휘 정리</span>
+        </div>
+        <!-- OCR 흐름 -->
+        <div style="background:rgba(45,106,79,0.06);border-radius:10px;padding:14px 16px;margin-bottom:16px;border:1px solid rgba(45,106,79,0.15);">
+          <div style="font-size:10px;color:var(--emerald);letter-spacing:2px;margin-bottom:10px;font-weight:700;">▶ OCR 학습 흐름</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555;flex-wrap:wrap;">
+            <span style="background:white;padding:5px 10px;border-radius:6px;border:1px solid #E0E0E0;">📷 시험지 촬영</span>
+            <span style="color:var(--sage);">→</span>
+            <span style="background:white;padding:5px 10px;border-radius:6px;border:1px solid #E0E0E0;">🔍 오답 감지</span>
+            <span style="color:var(--sage);">→</span>
+            <span style="background:white;padding:5px 10px;border-radius:6px;border:1px solid #E0E0E0;">✏️ 다시 풀기</span>
+            <span style="color:var(--sage);">→</span>
+            <span style="background:var(--sage);color:white;padding:5px 10px;border-radius:6px;">💬 설명하기</span>
+          </div>
+        </div>
+        <div class="sl-goal">
+          <div class="sl-goal-label">✓ 이 단계의 목표</div>
+          <div class="sl-goal-text">근거 없는 "같아서요" → 지문 속 표현을 직접 짚는 습관</div>
+        </div>
+        <a href="ocr.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:14px 24px;background:var(--emerald);color:white;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;font-family:'Noto Serif KR',serif;transition:all 0.2s;">
+          📷 내 시험지로 복기 시작하기 →
+        </a>
+      </div>
+      <div class="sl-right">
+        <div class="chat-box chat-q">
+          <div class="chat-label">지문 요약</div>
+          <div class="chat-text">The game was canceled because it rained all day.<br><span style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px;display:block;">→ 정답: ④ 경기가 취소된 이유</span></div>
+        </div>
+        <div class="chat-box chat-ha">
+          <div class="chat-label">하이애비뉴 질문</div>
+          <div class="chat-text">방금 이 문제를 왜 ④번으로 골랐는지 설명해볼 수 있어요?</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">학생 답변</div>
+          <div class="chat-text">음... 비가 와서 취소된 것 같아서요.</div>
+        </div>
+        <div class="chat-box chat-ha">
+          <div class="chat-label">하이애비뉴 질문</div>
+          <div class="chat-text">지문에서 그걸 알 수 있는 단어나 표현을 직접 찾아볼 수 있어요?</div>
+        </div>
+        <div class="chat-result">
+          <div class="rl">▶ 핵심 변화</div>
+          <div class="rt">"같아서요" → "because it rained all day라고 나와 있어서요"로 바뀌는 순간</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVEL 1 -->
+  <div class="stage-slide" id="slide-1">
+    <div class="stage-inner">
+      <div class="sl-left">
+        <div class="sl-level sl-level-1">
+          <span class="sl-lv-num sl-lv-1">LEVEL 1</span>
+          <span class="sl-lv-name sl-lv-1">설명왕</span>
+        </div>
+        <div class="sl-title">왜 그 답인지,<br>논리적으로 말할 수 있나요?</div>
+        <div class="sl-desc">정답을 찾는 것을 넘어, 왜 다른 선지는 틀리고 이 선지가 맞는지 인과관계를 설명하는 단계입니다. 면접관이 가장 먼저 확인하는 능력입니다.</div>
+        <div class="sl-tags">
+          <span class="sl-tag">인과관계 설명</span>
+          <span class="sl-tag">오답 이유 분석</span>
+          <span class="sl-tag">근거 문장 연결</span>
+        </div>
+        <div class="sl-goal">
+          <div class="sl-goal-label">✓ 이 단계의 목표</div>
+          <div class="sl-goal-text">"왠지" → "지문의 OO 때문에"로 설명하는 논리 습관</div>
+        </div>
+      </div>
+      <div class="sl-right">
+        <div class="chat-box chat-q">
+          <div class="chat-label">질문</div>
+          <div class="chat-text">왜 ①번이 아니라 ④번인가요?</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">Level 0 수준 답변</div>
+          <div class="chat-text">①번은 왠지 아닌 것 같아서요.</div>
+        </div>
+        <div class="chat-box chat-ha">
+          <div class="chat-label">하이애비뉴 질문</div>
+          <div class="chat-text">①번이 틀린 이유를 지문에서 찾아서 "because"를 써서 문장으로 말해봐요.</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">Level 1 수준 답변 ✓</div>
+          <div class="chat-text">①번은 틀렸어요. Because the text says "all day", 비가 하루 종일 온 것이 취소의 직접적인 이유이기 때문이에요.</div>
+        </div>
+        <div class="chat-result">
+          <div class="rl">▶ 핵심 변화</div>
+          <div class="rt">느낌에서 → 지문 근거 + 인과 접속사 활용으로</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVEL 2 -->
+  <div class="stage-slide" id="slide-2">
+    <div class="stage-inner">
+      <div class="sl-left">
+        <div class="sl-level sl-level-2">
+          <span class="sl-lv-num sl-lv-2">LEVEL 2</span>
+          <span class="sl-lv-name sl-lv-2">변형러</span>
+        </div>
+        <div class="sl-title">조건이 바뀌면<br>답도 바뀌나요?</div>
+        <div class="sl-desc">개념을 진짜 이해했다면 조건이 달라져도 대응할 수 있어야 합니다. 변형러는 원래 문제의 조건을 바꿔서 다시 생각하게 만드는 단계입니다.</div>
+        <div class="sl-tags">
+          <span class="sl-tag">조건 변형 대응</span>
+          <span class="sl-tag">유연한 사고</span>
+          <span class="sl-tag">개념 응용</span>
+        </div>
+        <div class="sl-goal">
+          <div class="sl-goal-label">✓ 이 단계의 목표</div>
+          <div class="sl-goal-text">조건 변화에 따라 결론이 달라지는 이유를 스스로 분석하는 힘</div>
+        </div>
+      </div>
+      <div class="sl-right">
+        <div class="chat-box chat-q">
+          <div class="chat-label">변형 질문</div>
+          <div class="chat-text">만약 "it rained briefly"(잠깐 비가 왔다면)로 바뀐다면 경기가 취소됐을까요?</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">초기 답변</div>
+          <div class="chat-text">음... 그래도 취소될 것 같아요.</div>
+        </div>
+        <div class="chat-box chat-ha">
+          <div class="chat-label">하이애비뉴 질문</div>
+          <div class="chat-text">"all day"가 있을 때와 없을 때 취소 여부가 달라질 수 있는 이유를 설명해봐요.</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">발전된 답변 ✓</div>
+          <div class="chat-text">"all day"는 하루 종일이라는 강도를 나타내서, briefly로 바뀌면 취소 결정을 내리기에 충분한 이유가 안 될 수도 있어요.</div>
+        </div>
+        <div class="chat-result">
+          <div class="rl">▶ 핵심 변화</div>
+          <div class="rt">정답 암기에서 → 어휘가 가진 의미 구조를 분석하는 능력으로</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVEL 3 -->
+  <div class="stage-slide" id="slide-3">
+    <div class="stage-inner">
+      <div class="sl-left">
+        <div class="sl-level sl-level-3">
+          <span class="sl-lv-num sl-lv-3">LEVEL 3</span>
+          <span class="sl-lv-name sl-lv-3">문제아</span>
+        </div>
+        <div class="sl-title">이제 직접<br>문제를 만들어보세요</div>
+        <div class="sl-desc">개념을 완전히 소화한 학생만이 새로운 문제를 설계할 수 있습니다. 문제아 단계는 학습자가 출제자의 시각을 갖게 되는 순간입니다.</div>
+        <div class="sl-tags">
+          <span class="sl-tag">문제 설계</span>
+          <span class="sl-tag">출제 의도 이해</span>
+          <span class="sl-tag">개념 완전 습득</span>
+        </div>
+        <div class="sl-goal">
+          <div class="sl-goal-label">✓ 이 단계의 의미</div>
+          <div class="sl-goal-text">문제를 만들 수 있다 = 개념을 완전히 이해했다는 증거</div>
+        </div>
+      </div>
+      <div class="sl-right">
+        <div class="chat-box chat-ha">
+          <div class="chat-label">하이애비뉴 질문</div>
+          <div class="chat-text">지금까지 배운 내용을 바탕으로 "인과관계"를 묻는 문제를 직접 하나 만들어볼 수 있어요? 지문과 선지까지요.</div>
+        </div>
+        <div class="chat-box chat-student">
+          <div class="chat-label">학생이 만든 문제 ✓</div>
+          <div class="chat-text">
+            [지문] She missed the bus because she woke up late.<br><br>
+            [문제] What is the main reason she missed the bus?<br><br>
+            ① She was tired.<br>
+            ② She woke up late. ← 정답<br>
+            ③ The bus was early.<br>
+            ④ She forgot her bag.
+          </div>
+        </div>
+        <div class="chat-result">
+          <div class="rl">▶ 이 학생은 이제</div>
+          <div class="rt">어떤 변형에도 흔들리지 않습니다. 출제자의 시각으로 지문을 읽기 때문입니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- 슬라이더 컨트롤 -->
+<div class="stage-controls">
+  <a class="sc-btn" onclick="changeStage(-1)">←</a>
+  <div class="sc-dots" id="scDots">
+    <div class="sc-dot active" onclick="goStage(0)"></div>
+    <div class="sc-dot" onclick="goStage(1)"></div>
+    <div class="sc-dot" onclick="goStage(2)"></div>
+    <div class="sc-dot" onclick="goStage(3)"></div>
+  </div>
+  <a class="sc-btn" onclick="changeStage(1)">→</a>
+  <span class="sc-label" id="scLabel">1 / 4</span>
+</div>
+
+<!-- 파일럿 데이터 -->
+<section class="data-section">
+  <span class="sec-tag">Pilot Results</span>
+  <div class="sec-title">1월 파일럿 10명, 3주 결과</div>
+  <div class="sec-desc">실제 학생들과 검증한 수치입니다.</div>
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="data-num">+21.4점</div>
+      <div class="data-label">평균 사고력 점수 향상<br>(3주 만에 하위권 → 중상위권)</div>
+    </div>
+    <div class="data-card">
+      <div class="data-num">52%</div>
+      <div class="data-label">코칭 질문 받은 후<br>스스로 답변 수정한 학생 비율</div>
+    </div>
+    <div class="data-card">
+      <div class="data-num">73%</div>
+      <div class="data-label">Level 2 진급 가능<br>3주 후 기준</div>
+    </div>
+  </div>
+</section>
+
+<!-- 코칭 예시 -->
+<section class="process-section">
+  <span class="sec-tag">하이애비뉴 코칭</span>
+  <div class="sec-title">하위권 답변이 상위권으로 바뀌는 과정</div>
+  <div class="sec-desc">실제 코칭 대화를 확인해보세요.</div>
+  <div class="process-wrap">
+    <div class="p-qbox">
+      <div class="p-ql">독해 문제</div>
+      <div class="p-qt">다음 글에서 게임이 취소된 이유로 가장 적절한 것은?<br><span style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;display:block;">"The game was canceled because it rained all day."</span></div>
+    </div>
+    <div class="p-row">
+      <div class="p-bubble p-low"><div class="bl">하위권 답변</div>비가 와서 취소된 것 같아요. ④번인 것 같아요.</div>
+    </div>
+    <div class="p-row">
+      <div class="ha-av">HA</div>
+      <div class="p-bubble p-ha"><div class="bl">코칭 질문 1</div>지문에서 취소 이유를 알 수 있는 단어를 직접 찾아볼 수 있어요?</div>
+    </div>
+    <div class="p-row">
+      <div class="ha-av">HA</div>
+      <div class="p-bubble p-ha"><div class="bl">코칭 질문 2</div>"all day"가 있는 것과 없는 것이 어떤 차이를 만드는지 설명해줄 수 있어요?</div>
+    </div>
+    <div class="p-row right">
+      <div class="p-bubble p-student"><div class="bl">상위권 답변</div>"because it rained all day"에서 because가 인과관계를 나타내고, "all day"는 하루 종일이라는 정도를 강조해요. 그래서 ④번이 맞고, "all day"가 없었다면 취소 이유로 충분하지 않을 수 있어요.</div>
+    </div>
+    <div class="p-quote">"답을 아는 것과 설명할 수 있는 것은 완전히 다릅니다."</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-title">6월 파일럿 프로그램<br>지금 신청하세요</div>
+  <div class="cta-desc">서울 메트로 지역 학원 대상 · 영어 트랙 / 논구술 트랙 선택 가능</div>
+  <div class="cta-btns">
+    <a class="btn-white" href="#">영어 파일럿 신청 →</a>
+    <a class="btn-outline2" href="index.html">← 메인으로</a>
+  </div>
+  <div class="cta-contact">하이애비뉴 · <span>010-2575-6941</span></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">문제아 問·題·兒</div>
+  <div class="footer-info">하이애비뉴 · 박정아 원장 · 010-2575-6941</div>
+  <div class="footer-info">© 2026 하이애비뉴</div>
+</footer>
+
+<script>
+  const levelColors = [
+    { bg: '#1B3A2D', dot: '#52B788', ctrl: '#152E23' }, // Level 0 그린
+    { bg: '#0D1B2A', dot: '#64A0E6', ctrl: '#0A1520' }, // Level 1 블루
+    { bg: '#1C1500', dot: '#E6B432', ctrl: '#161000' }, // Level 2 옐로우
+    { bg: '#1A0A1A', dot: '#C864A0', ctrl: '#140814' }, // Level 3 퍼플
+  ];
+
+  let current = 0;
+  const total = 4;
+  let autoPlay = setInterval(() => changeStage(1), 5000);
+
+  function goStage(idx) {
+    current = idx;
+    updateSlider();
+    clearInterval(autoPlay);
+    autoPlay = setInterval(() => changeStage(1), 5000);
+  }
+
+  function changeStage(dir) {
+    current = (current + dir + total) % total;
+    updateSlider();
+  }
+
+  function updateSlider() {
+    document.querySelectorAll('.stage-slide').forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+    });
+    document.querySelectorAll('.sc-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+      d.style.background = i === current ? levelColors[current].dot : 'rgba(255,255,255,0.2)';
+    });
+    document.querySelectorAll('.step-circle').forEach((c, i) => {
+      c.classList.toggle('active', i === current);
+    });
+    document.getElementById('scLabel').textContent = `${current + 1} / ${total}`;
+    document.getElementById('scLabel').textContent = `${current + 1} / ${total}`;
+    // 컨트롤 배경 색상 변경
+    document.querySelector('.stage-controls').style.background = levelColors[current].ctrl;
+    document.querySelector('.stage-section').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // 초기 컨트롤 색상 설정
+  document.querySelector('.stage-controls').style.background = levelColors[0].ctrl;
+</script>
+</body>
+</html>
